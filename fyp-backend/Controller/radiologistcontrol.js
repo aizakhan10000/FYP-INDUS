@@ -1,4 +1,7 @@
-const Radiologist = require("./model");
+const Radiologist = require("../Model/radiologistmodel");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 
 async function signup(req, res) {
     try {
@@ -7,27 +10,27 @@ async function signup(req, res) {
         hospitalID,
         username, 
         password,
+        
       } = req.body;
       console.log("body", req.body);
   
-      const customerExists = await Customer.findOne({ email, username });
+      const radiologistExists = await Radiologist.findOne({ username });
   
-      if (!customerExists) {
-        const customer = await Customer.create({
+      if (!radiologistExists) {
+        const radiologist = await Radiologist.create({
           name,
           hospitalID,
           username,
           password,
-          patients: [],
+          
         });
-  
         res.status(200).send({
           message: "Radiologist signup successfully",
-          data: customer, // Sending back the created customer data
+          data: radiologist, // Sending back the created customer data
         });
       } else {
         res.status(400).send({
-          message: "Customer already exists",
+          message: "Radiologist already exists",
         });
       }
     } catch (error) {
@@ -38,7 +41,9 @@ async function signup(req, res) {
       });
     }
   }
-/*
+
+// TO BE EDITED
+
   async function login(req, res) {
     try {
       const { username, password } = req.body;
@@ -65,7 +70,7 @@ async function signup(req, res) {
           console.log(token);
   
           const refToken = await jwt.sign(
-            { customer },
+            { radiologist },
             process.env.REFRESH_TOKEN_SECRET,
             {
               expiresIn: "8hr",
@@ -83,7 +88,7 @@ async function signup(req, res) {
             .status(200)
             .send({
               message: "customer login successfully",
-              data: customer,
+              data: radiologist,
             });
         }
       }
@@ -92,7 +97,7 @@ async function signup(req, res) {
       throw error;
     }
   }
-
+/*
   async function resetPassword(req, res) {
     try {
       const { username, password, newPassword, confirmPassword } = req.body;
@@ -160,10 +165,11 @@ async function signup(req, res) {
       }
     } catch (error) {}
   }
-*/
+  */
+
   module.exports = {
     signup,
-    //login,
+    login,
     //forgetPassword,
     //resetPassword,
   }

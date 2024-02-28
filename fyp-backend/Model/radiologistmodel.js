@@ -13,6 +13,7 @@ const RadiologistSchema= new mongoose.Schema({
     username: {
         type: String,
         require: true,
+
     },
     password: {
         type: String,
@@ -23,7 +24,7 @@ const RadiologistSchema= new mongoose.Schema({
 
 RadiologistSchema.pre("save",function(next){
     console.log(this.password)
-    this.password=bycrypt.hashSync(this.password,10);
+    this.password=bcrypt.hashSync(this.password,10);
     next();
 });
 
