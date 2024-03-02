@@ -1,33 +1,35 @@
-const Radiologist = require("./model");
+const Radiologist = require("../models/radiologistModel");
+const createError = require("http-errors");
+const { AccessToken, RefreshToken } = require("../helpers/JWT_Tokens");
 
 async function signup(req, res) {
     try {
       const {
-        name,
-        hospitalID,
-        username, 
+        email,
+        // hospitalID,
+        // username, 
         password,
       } = req.body;
       console.log("body", req.body);
   
-      const customerExists = await Customer.findOne({ email, username });
+      const radiologistExists = await Radiologist.findOne({ email });
   
-      if (!customerExists) {
-        const customer = await Customer.create({
-          name,
-          hospitalID,
-          username,
+      if (!radiologistExists) {
+        const radiologist = await Radiologist.create({
+          email,
+          // hospitalID,
+          // username,
           password,
           patients: [],
         });
   
         res.status(200).send({
           message: "Radiologist signup successfully",
-          data: customer, // Sending back the created customer data
+          data: radiologist, // Sending back the created customer data
         });
       } else {
         res.status(400).send({
-          message: "Customer already exists",
+          message: "Radiologist already exists",
         });
       }
     } catch (error) {
@@ -38,52 +40,29 @@ async function signup(req, res) {
       });
     }
   }
-/*
+
   async function login(req, res) {
     try {
-      const { username, password } = req.body;
+      const { email, password } = req.body;
       console.log(req.body);
       let radiologist;
   
       if (!username || !password) {
         res.status(401).send({
-          message: "Invalid username or password",
+          message: "Invalid email or password",
         });
       } else {
-        radiologist = await Radiologist.findOne({ username });
+        radiologist = await Radiologist.findOne({ email });
         console.log("Radiologist fetched");
         if (!radiologist || !(await bcrypt.compare(password, radiologist.password))) {
           res.status(401).send({
-            message: "Invalid username or password",
+            message: "Invalid email or password",
           });
         } else {
-          const secretKey = process.env.SECRET_KEY;
-  
-          const token = await jwt.sign({ radiologist }, secretKey, {
-            expiresIn: "1hr",
-          });
-          console.log(token);
-  
-          const refToken = await jwt.sign(
-            { customer },
-            process.env.REFRESH_TOKEN_SECRET,
-            {
-              expiresIn: "8hr",
-            }
-          );
-          console.log(token);
-  
-          res
-            .cookie("access_token", token, {
-              httpOnly: true,
-            })
-            .cookie("refreshToken", refToken, {
-              httpOnly: true,
-            })
-            .status(200)
-            .send({
-              message: "customer login successfully",
-              data: customer,
+          const accessToken = await AccessToken(radiologist.id);
+            res.status(200).send({
+              message: "Radiologist login successfully",
+              data: {radiologist,accessToken}
             });
         }
       }
@@ -95,31 +74,25 @@ async function signup(req, res) {
 
   async function resetPassword(req, res) {
     try {
-      const { username, password, newPassword, confirmPassword } = req.body;
+      const { email, newPassword, confirmPassword } = req.body;
   
-      const customer = await Customer.findOne({ username });
-      console.log(customer.password);
-      console.log(password);
+      const radiologist = await Radiologist.findOne({ email });
   
-      if (!(await bcrypt.compare(password, customer.password))) {
-        res.status(401).send({
-          message: "incorrect password",
-        });
-      } else if (newPassword != confirmPassword) {
+      if (newPassword != confirmPassword) {
         res.status(400).send({
-          message: "password does not match",
+          message: "passwords do not match",
         });
       } else {
-        console.log(newPassword);
-        const hashPassword = bcrypt.hashSync(newPassword, 10);
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(newPassword, salt);
   
-        const updatedCustomer = await Customer.updateOne({
-          password: hashPassword,
+        const updatedRadiologist = await Customer.updateOne({
+          password: hash,
         });
   
         res.status(200).send({
           message: "Password updated successfully",
-          data: updatedCustomer,
+          data: updatedRadiologist,
         });
       }
     } catch (error) {
@@ -128,42 +101,29 @@ async function signup(req, res) {
     }
   }
 
-
   async function forgetPassword(req, res) {
     try {
-      const { username, newPassword, confirmPassword } = req.body;
+      const { email } = req.body;
   
-      const customer = await Customer.findOne({ username });
-      console.log(customer);
+      const radiologist = await Radiologist.findOne({ email });
+      console.log(radiologist);
   
-      if (customer) {
-        if (newPassword === confirmPassword) {
-          const hashPassword = bcrypt.hashSync(newPassword, 10);
-  
-          const updateCustomerPassword = await Customer.updateOne({
-            password: hashPassword,
+      if (!radiologist) throw createError.NotFound("Radiologist not registered!");
+    res.status(200).send({
+            message: "Radiologist found successfully!",
           });
-  
-          res.status(200).send({
-            message: "Password updated successfully",
-            data: updateCustomerPassword,
-          });
-        } else {
-          res.status(400).send({
-            message: "Passwords donot match",
-          });
-        }
-      } else {
-        res.status(400).send({
-          message: "Customer not found or password donot match",
-        });
-      }
-    } catch (error) {}
+
   }
-*/
+  catch(error){
+    res.status(400).send({
+      message: "Radiologist not found!",
+    });
+  }
+}
+
   module.exports = {
     signup,
-    //login,
-    //forgetPassword,
-    //resetPassword,
+    login,
+    forgetPassword,
+    resetPassword,
   }
