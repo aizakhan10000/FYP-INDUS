@@ -1,5 +1,5 @@
 const express = require("express");
-//const radiologistController = require('..Controller/radiologistcontrol');
+
 const radiologistController = require('../Controller/radiologistcontrol');
 
 const router = express.Router();
