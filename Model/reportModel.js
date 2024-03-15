@@ -20,5 +20,5 @@ const reportModel = new mongoose.Schema({
     }
 
 })
-const Report = mongoose.Model('report',reportModel)
+const Report = mongoose.model('report',reportModel)
 module.exports = Report
