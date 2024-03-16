@@ -1,0 +1,26 @@
+/* Ensures the background for the entire content area is #e3f2fd and text color is black */
+.content-area {
+  background-color: #e3f2fd; /* Light blue background */
+  color: #000; /* Black text color */
+}
+
+/* Adds padding to the content area for better spacing */
+.content-area .container-fluid {
+  padding: 20px;
+}
+
+/* Styles for the table to ensure consistency in text color */
+.table th, .table td {
+  color: #000; /* Black text for table contents */
+}
+
+/* Navbar adjustments for centered content */
+.navbar-brand {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Ensures buttons and form controls also have black text */
+.btn, .form-control {
+  color: #000;
+}
