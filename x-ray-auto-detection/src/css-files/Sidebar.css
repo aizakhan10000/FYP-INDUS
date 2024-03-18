@@ -1,0 +1,25 @@
+/* Sidebar.css */
+
+.sidebar {
+    background-color: lightgray;
+    height: 110%; /* Ensure the background color covers the entire width */
+  }
+  
+  .option {
+    display: block;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #fff;
+    color: #333;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .option:hover {
+    background-color: #f0f0f0;
+  }
+  

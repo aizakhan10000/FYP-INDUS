@@ -42,6 +42,7 @@ async function createPatient(req,res) {
             res.send("Invalid details");
           } else {
             res.send({
+              ok: true,
               message: "successfully fetched all patients for this radiologist",
               data: { patients },
             });
