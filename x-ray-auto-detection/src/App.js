@@ -10,6 +10,7 @@ import Patients from './Patients';
 import PatientDetails from './PatientDetail';
 import GenerateReport from './GenerateReport';
 import PatientHistory from './PatientHistory';
+import CreatePatient from './CreatePatient';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/patient-detail" element={<PatientDetails />} />
           <Route path="/patient-history" element={<PatientHistory />} />
           <Route path="/report" element={<GenerateReport />} />
+          <Route path="/create-patient" element={<CreatePatient />} />
           {/* You can add more Route components here for other paths */}
         </Routes>
       </div>
