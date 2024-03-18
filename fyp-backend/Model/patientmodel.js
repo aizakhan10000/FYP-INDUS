@@ -12,11 +12,11 @@ const patientSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
-    PatientID: {
-      type: String,
-      require: true,
-      unique: true,
-    },
+    // PatientID: {
+    //   type: String,
+    //   require: true,
+    //   unique: true,
+    // },
     phoneNo: {
       type: String,
       require: true,
@@ -31,9 +31,9 @@ const patientSchema = new mongoose.Schema(
     },
     radiologist: [
       {
-        type: mongoose.Schema.ObjectId,
+        type: Number,
         ref: "radiologist",
-        default: [],
+        // default: [],
       },
     ],
   }
