@@ -1,0 +1,53 @@
+/* Dashboard.css */
+
+/* Soft Blue Background */
+.bg-primary-soft-blue {
+    background-color: #e3f2fd; /* Light blue background */
+  }
+  
+  .fade-in {
+    animation: fadeInAnimation ease 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+  
+  @keyframes fadeInAnimation {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  .card, .list-group-item, .table {
+    transition: transform 0.2s; /* Animation for hover */
+  }
+  
+  .card:hover, .list-group-item:hover, .table tr:hover {
+    transform: scale(1.03); /* Slightly scale up on hover */
+  }
+  
+  .list-group-item, .table th, .table td {
+    background-color: #f1f8fe; /* Very light blue for list items and table cells */
+  }
+  
+  .table th {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #e3f2fd;
+  }
+  
+  /* Ensures the sticky header isn't transparent */
+  .table thead th {
+    background-color: #e3f2fd;
+  }
+
+  .custom-button {
+    background-color: #e3f2fd !important;
+    border-color: #e3f2fd !important;
+    color: #000 !important; /* Ensure text color is readable, adjust as needed */
+  }
+  
+  
