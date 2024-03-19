@@ -1,0 +1,24 @@
+/* Homepage.css */
+.homepage-container {
+    min-height: 100vh;
+    background-color: #4ac5ee; /* Light blue background */
+    padding-top: 50px;
+   } 
+
+
+  
+  .logo {
+    max-height: 150px; /* Adjust the size as necessary */
+    vertical-align: middle;
+  }
+  
+  .collaboration-symbol {
+    font-size: 2rem; /* Big symbol to signify collaboration */
+    vertical-align: middle;
+  }
+  
+  .motto {
+    font-weight: bold;
+    color: #0056b3; /* Match this color to your theme */
+  }
+  
