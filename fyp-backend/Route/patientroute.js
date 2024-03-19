@@ -5,5 +5,7 @@ const patientController = require('../Controller/patientcontrol');
 const {verifyAccessToken} = require("../auth/JWT_Tokens");
 const {verifyJwtToken} = require("../auth/tokenVerification")
 router.post('/createPatient', verifyAccessToken, patientController.createPatient);
-router.get('/getAllPatients/:id', verifyAccessToken, patientController.getAllPatients);
+router.get('/getAllPatients', verifyAccessToken, patientController.getAllPatients);
+router.get('/getPatient/:id', patientController.getPatientById);
+
 module.exports = router;
