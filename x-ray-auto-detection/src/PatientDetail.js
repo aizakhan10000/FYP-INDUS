@@ -11,7 +11,9 @@ const PatientDetails = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef();
   const [showGenerateReport, setShowGenerateReport] = useState(false);
-
+  const [reportResult, setReportResult] = useState(''); // State to store report result
+  const [imageFile, setImageFile] = useState(null); // State to store the selected file
+  
   const patient = {
     firstName: 'Laura',
     lastName: 'Jeans',
