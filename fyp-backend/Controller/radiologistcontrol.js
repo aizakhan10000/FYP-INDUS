@@ -1,6 +1,8 @@
 const Radiologist = require("../Model/radiologistmodel");
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
+const { AccessToken } = require("../auth/JWT_Tokens");
+
 
 async function signup(req, res) {
     try {
@@ -23,9 +25,12 @@ async function signup(req, res) {
           password,
           
         });
+        const accessToken = await AccessToken(radiologist.id);
+
         res.status(200).send({
           message: "Radiologist signup successfully",
-          data: radiologist, // Sending back the created customer data
+          data: radiologist, // Sending back the created radiologist data
+          accessToken : accessToken
         });
       } else {
         res.status(400).send({
@@ -56,38 +61,41 @@ async function signup(req, res) {
       } else {
         radiologist = await Radiologist.findOne({ username });
         console.log("Radiologist fetched");
-        if (!radiologist || !(await bcrypt.compare(password, radiologist.password))) {
+        if (!radiologist || !bcrypt.compare(password, radiologist.password)) {
           res.status(401).send({
             message: "Invalid username or password",
           });
         } else {
-          const secretKey = process.env.SECRET_KEY;
+          // const secretKey = process.env.SECRET_KEY;
   
-          const token = await jwt.sign({ radiologist }, secretKey, {
-            expiresIn: "1hr",
-          });
-          console.log(token);
+          // const token = jwt.sign({ radiologist }, secretKey, {
+          //   expiresIn: "1hr",
+          // });
+          // console.log(token);
   
-          const refToken = await jwt.sign(
-            { radiologist },
-            process.env.REFRESH_TOKEN_SECRET,
-            {
-              expiresIn: "8hr",
-            }
-          );
-          console.log(token);
+          // const refToken = jwt.sign(
+          //   { radiologist },
+          //   process.env.REFRESH_TOKEN_SECRET,
+          //   {
+          //     expiresIn: "8hr",
+          //   }
+          // );
+          // console.log(token);
   
-          res
-            .cookie("access_token", token, {
-              httpOnly: true,
-            })
-            .cookie("refreshToken", refToken, {
-              httpOnly: true,
-            })
-            .status(200)
+          // res
+          //   .cookie("access_token", token, {
+          //     httpOnly: true,
+          //   })
+          //   .cookie("refreshToken", refToken, {
+          //     httpOnly: true,
+          //   })
+          const accessToken = await AccessToken(radiologist.id);
+
+            res.status(200)
             .send({
               message: "Radiologist login successfully",
               data: radiologist,
+              accessToken : accessToken
             });
         }
       }

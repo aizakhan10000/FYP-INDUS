@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const createError = require("http-errors");
-const User = require("../models/guardian");
+const User = require("../Model/radiologistmodel");
+require('dotenv').config()
+
 
 module.exports = {
   AccessToken: (userId) => {

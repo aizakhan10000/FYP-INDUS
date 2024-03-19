@@ -2,32 +2,51 @@ const express = require('express');
 const mongoose = require('mongoose')
 const createError = require("http-errors")
 const XRay = require("../Model/xRayModel");
+const FormData = require('form-data');
+const fs = require('fs');
+const path = require('path');
+const axios = require("axios")
+require('dotenv').config()
 
 //for uploading single x-ray
-async function uploadXray(req, res){
+async function uploadXray(req, res) {
     try {
-        // Assuming you have some way to identify the specific patient/appointment, 
-        // for example through request parameters or body
-        // For this example, I'll assume it's passed as part of the request body
-        const { patient_id, title } = req.body; // You might need to pass and use these as well
-
+        // Initialize the XRay document
         const xray = new XRay({
             _id: new mongoose.Types.ObjectId(),
             image: req.file.path,
-            attended: true, // Set attended to true upon upload
-           
-            
+            patient_id: req.params.id, // Ensure you're capturing patient_id correctly
         });
-        
+
+        // Save the XRay document
         const savedXRay = await xray.save();
+
+        // Prepare for the Flask server request
+        const url = `${process.env.Flask_URL}/predict`;
+        const image_path = req.file.path;
+        
+        // Create a FormData instance and append the file
+        const formData = new FormData();
+        formData.append('image', fs.createReadStream(image_path));
+        
+        // Make the request to the Flask server
+        const response = await axios.post(url, formData, {
+            headers: {
+                ...formData.getHeaders()
+            }
+        });
+
+        // Respond with success and the response from the Flask server
         res.status(200).json({
             message: "XRay is uploaded successfully!",
             error: "",
-            xray: savedXRay
+            result: response.data,
+            xray: savedXRay // Changed from req.file to savedXRay for consistency
         });
-    } catch(error) {
+    } catch (error) {
+        console.log(error);
         res.status(400).json({
-            error: error,
+            error: error.message, // Provide a bit more detail on the error
             xray: {}
         });
     }
