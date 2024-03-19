@@ -5,10 +5,15 @@ const xRaySchema= new mongoose.Schema({
     title:{
         type: String,
     },
-    patient_id:{
+    
+    PatientID:{
         type: Number,
         required: true,
         ref: 'Patient'
+    },
+    attended:{
+        type:Boolean,
+        ref:'Appointment'
     },
     image: {
         type: String,//because it will just save the url

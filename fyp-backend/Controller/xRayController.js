@@ -9,46 +9,49 @@ const axios = require("axios")
 require('dotenv').config()
 
 //for uploading single x-ray
-async function uploadXray(req, res){
-    try{
-    const xray = new XRay({
-        _id: new mongoose.Types.ObjectId(),
-        image: req.file.path,
-        patient_id: req.params.id
-    })
-    const savedXRay = await xray.save();
-    const url = `${process.env.Flask_URL}/predict`;
-    const image_path=req.file.path;
-    const image_file=req.file;
+async function uploadXray(req, res) {
+    try {
+        // Initialize the XRay document
+        const xray = new XRay({
+            _id: new mongoose.Types.ObjectId(),
+            image: req.file.path,
+            patient_id: req.params.id, // Ensure you're capturing patient_id correctly
+        });
 
-    //Create a FormData instance
-    const formData = new FormData();
-    // Append the file. Make sure to use 'image' as the field name to match your Flask endpoint expectation.
-    // Use fs.createReadStream to read the file from the path if necessary.
-    formData.append('image', fs.createReadStream(image_path));
-        var response = await axios.post(url, formData, {
+        // Save the XRay document
+        const savedXRay = await xray.save();
+
+        // Prepare for the Flask server request
+        const url = `${process.env.Flask_URL}/predict`;
+        const image_path = req.file.path;
+        
+        // Create a FormData instance and append the file
+        const formData = new FormData();
+        formData.append('image', fs.createReadStream(image_path));
+        
+        // Make the request to the Flask server
+        const response = await axios.post(url, formData, {
             headers: {
                 ...formData.getHeaders()
             }
-        })
-        console.log(response.data)
-    res.status(200).json({
-        message: "XRay is uploaded successfully!",
-        error: "",
-        result: response.data,
-        xray: req.file
-    })
-}
-    catch(error){
-        console.log(error);
+        });
 
+        // Respond with success and the response from the Flask server
+        res.status(200).json({
+            message: "XRay is uploaded successfully!",
+            error: "",
+            result: response.data,
+            xray: savedXRay // Changed from req.file to savedXRay for consistency
+        });
+    } catch (error) {
+        console.log(error);
         res.status(400).json({
-            // message: "",
-            error: error,
+            error: error.message, // Provide a bit more detail on the error
             xray: {}
-        })
+        });
     }
 }
+
 
 async function viewXray(req,res){
     try{
@@ -86,8 +89,26 @@ async function deleteXray(req, res){
         
     }
 }
+
+
+async function countAttendedXrays(req, res) {
+    try {
+        const count = await XRay.countDocuments({ attended: true });
+        res.status(200).json({
+            message: "Count of attended X-Rays retrieved successfully",
+            count: count
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: error.message,
+            count: 0
+        });
+    }
+}
+
 module.exports={
     uploadXray,
     viewXray,
-    deleteXray
+    deleteXray,
+    countAttendedXrays
 }
