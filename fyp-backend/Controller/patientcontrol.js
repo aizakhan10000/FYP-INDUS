@@ -2,7 +2,6 @@ const Patient = require("../Model/patientmodel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-
 async function createPatient(req,res) {
     try {
         const{ name, city, PatientID, gender, phoneNo, patientHistory, radiologist }=req.body;

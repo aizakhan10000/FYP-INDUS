@@ -17,10 +17,13 @@ const {
 uploadXray,
 viewXray,
 deleteXray,
+countAttendedXrays
+
 }= require("../Controller/xRayController");
 
 router.post("/uploadXRay",upload.single('image'),uploadXray)
 router.get("/viewXray/:id", viewXray)
 router.delete("/deleteXRay",deleteXray)
+router.get("/countAttendedXrays", countAttendedXrays);
 
 module.exports = router
