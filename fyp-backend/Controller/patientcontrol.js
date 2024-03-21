@@ -59,6 +59,7 @@ async function createPatient(req,res) {
           if (!patient) {
             res.send("Invalid patient id");
           } else {
+            console.log("Success")
             res.send({
               ok: true,
               message: `successfully fetched the patient of id ${patient_id}`,

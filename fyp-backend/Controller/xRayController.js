@@ -15,7 +15,7 @@ async function uploadXray(req, res) {
         const xray = new XRay({
             _id: new mongoose.Types.ObjectId(),
             image: req.file.path,
-            patient_id: req.params.id, // Ensure you're capturing patient_id correctly
+            // patient_id: req.params.id, // Ensure you're capturing patient_id correctly
         });
 
         // Save the XRay document

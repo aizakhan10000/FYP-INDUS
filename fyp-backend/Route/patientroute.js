@@ -8,10 +8,7 @@ const {verifyAccessToken} = require("../auth/JWT_Tokens");
 router.post('/createPatient',  patientController.createPatient);
 // router.get('/getAllPatients', verifyAccessToken, patientController.getAllPatients);
 router.get('/getAllPatients', patientController.getAllPatients);
+router.get('/getPatientById/:id', patientController.getPatientById);
 
-const {verifyJwtToken} = require("../auth/tokenVerification")
-router.post('/createPatient', verifyAccessToken, patientController.createPatient);
-router.get('/getAllPatients', verifyAccessToken, patientController.getAllPatients);
-router.get('/getPatient/:id', patientController.getPatientById);
 
 module.exports = router;
