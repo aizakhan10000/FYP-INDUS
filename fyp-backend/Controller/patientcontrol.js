@@ -2,7 +2,6 @@ const Patient = require("../Model/patientmodel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-
 async function createPatient(req,res) {
     try {
         const{ name, city, PatientID, gender, phoneNo, patientHistory, radiologist }=req.body;
@@ -42,8 +41,29 @@ async function createPatient(req,res) {
             res.send("Invalid details");
           } else {
             res.send({
+              ok: true,
               message: "successfully fetched all patients for this radiologist",
               data: { patients },
+            });
+          }
+        } catch (error) {
+          console.log(error);
+          throw error;
+        }
+      }
+
+      async function getPatientById(req, res) {
+        try {
+          const patient_id = req.params.id;
+          const patient = await Patient.findById(patient_id);
+          if (!patient) {
+            res.send("Invalid patient id");
+          } else {
+            console.log("Success")
+            res.send({
+              ok: true,
+              message: `successfully fetched the patient of id ${patient_id}`,
+              data: { patient },
             });
           }
         } catch (error) {
@@ -56,5 +76,6 @@ async function createPatient(req,res) {
      
       createPatient,
       getAllPatients,
+      getPatientById
     };
     

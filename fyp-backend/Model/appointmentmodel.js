@@ -1,39 +1,39 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
-const patientSchema = new mongoose.Schema(
+const appointmentSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       require: true,
       unique: true,
     },
-    city: {
+    PatientID: {
       type: String,
       require: true,
+      unique: true,
     },
-    // PatientID: {
-    //   type: String,
-    //   require: true,
-    //   unique: true,
-    // },
     phoneNo: {
       type: String,
       require: true,
     },
-    patientHistory: {
-      type: String,
+    attended: {
+      type: Boolean,
       require: true,
     },
     gender: {
       type: String,
       require: true,
     },
+    date:{
+        type:Date,
+        default:Date.now,
+    },
     radiologist: [
       {
-        type: Number,
+        type: mongoose.Schema.ObjectId,
         ref: "radiologist",
-        // default: [],
+        default: [],
       },
     ],
   }
@@ -45,6 +45,6 @@ const patientSchema = new mongoose.Schema(
   next();
 });
 */
-const Patient = mongoose.model("patient", patientSchema);
+const Appointment = mongoose.model("appointment", appointmentSchema);
 
-module.exports = Patient;
+module.exports = Appointment;
