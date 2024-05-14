@@ -11,7 +11,7 @@ const Patient = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:3000/patient/getAllPatients') // Adjust your API endpoint accordingly
+    fetch('http://localhost:3000/patient/getAllPatients') 
       .then(response => {
         if (!response.ok) {
           throw new Error('Failed to fetch');

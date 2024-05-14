@@ -17,24 +17,6 @@ const PatientDetails = () => {
   const [reportResult, setReportResult] = useState(''); // State to store report result
   const [imageFile, setImageFile] = useState(null); // State to store the selected file
   
-  // const patient = {
-  //   firstName: 'Laura',
-  //   lastName: 'Jeans',
-  //   gender: 'Female',
-  //   age: 28,
-  //   image: 'https://via.placeholder.com/150', // Placeholder image
-  // };
-  // useEffect(() => {
-  //   const fetchPatientDetails = async () => {
-  //     try {
-  //       const response = await axios.get(`http://localhost:3000/patient/getPatientById/${id}`);
-  //       console.log(response.data.patient)
-  //       setPatient(response.data.patient); // Adjust according to your actual API response
-  //     } catch (error) {
-  //       console.error('Error fetching patient details:', error);
-  //       // Handle error (e.g., set an error state, show a message, etc.)
-  //     }
-  //   };
   useEffect(() => {
     const fetchPatientDetails = async () => {
       try {
