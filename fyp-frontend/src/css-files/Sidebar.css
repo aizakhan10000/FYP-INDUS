@@ -1,0 +1,58 @@
+/* Sidebar overall styling */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.2rem;
+  color: white;
+  background-color: #661c3a; /* Adjust the main background color as needed */
+  min-height: 100vh; /* Ensures it fills at least the full height of the viewport */
+  height: 100%; /* This can help extend the background with content */
+}
+
+/* Logo container with specific styling */
+.logo-container {
+  background-color: white;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.logo-container img {
+  width: 80px; /* Adjust the logo size as needed */
+  height: auto;
+}
+
+/* Navigation links styling */
+.options {
+  width: 100%;
+  list-style-type: none;
+  padding: 0;
+}
+
+.nav-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  color: white;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  background-color: #e9242b; /* Adjust hover color as needed */
+}
+
+/* Profile styling */
+.profile {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+}
+
+.profile img {
+  margin-right: 10px;
+}
