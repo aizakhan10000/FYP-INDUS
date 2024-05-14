@@ -1,4 +1,5 @@
-import React from 'react';
+import React , { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faList, faUpload, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
@@ -6,11 +7,15 @@ import profileImage from '../profile.jpg'; // Adjust the path as needed
 import '../css-files/Sidebar.css'; // Adjust the path as needed
 
 function Sidebar() {
+  // const [userName, setUserName] = useState('');
+  const user = useSelector(state => state.user).user;
+  console.log("SIDEBAR: ", user)
+  
   return (
     <div className="sidebar p-3" style={{ fontSize: '1.2rem', gridColumn: 'span 2' }}>
       <div className="profile mb-3 d-flex align-items-center">
         <img src={profileImage} alt="Profile" className="rounded-circle mr-2" width="50" height="50" />
-        <span className="profile-name">John Doe</span>
+        <span className="profile-name">{user ? user.name : 'Guest'}</span>
       </div>
       <ul className="options">
         <li className="option mb-2">

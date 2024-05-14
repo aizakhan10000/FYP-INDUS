@@ -1,46 +1,56 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setUser } from './actions/userActions'; // Define setUser action
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './LoginPage.css'; // Ensure this path is correct
 import logo from './logo.png'; // Update the path according to your project structure
 import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
+    const dispatch = useDispatch();
   let navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(''); // State to handle login errors
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Reset login error state on each submission
     setLoginError('');
-
     // Using fetch to POST login details
-    fetch('http://localhost:3000/radiologist/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    })
-    .then(response => {
+    try {
+      // Using fetch to POST login details
+      const response = await fetch('http://localhost:3000/radiologist/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+
       if (!response.ok) {
         throw new Error('Login failed');
       }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Login successful', data);
+
+      // Assuming user data is returned from login API
+      const userData = await response.json();
+      // console.log("USER DATA: ", userData);
+      const Data = userData.data
+      console.log("USER DATA: ", Data);
+
+      // Dispatch action to set user data in Redux store
+      dispatch(setUser(Data));
+
+      console.log('Login successful', userData);
       // Navigate to dashboard or other intended route upon successful login
       navigate("/dashboard");
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('Login error:', error);
       setLoginError('Failed to login. Please check your credentials and try again.');
-    });
+    }
   };
 
   return (
