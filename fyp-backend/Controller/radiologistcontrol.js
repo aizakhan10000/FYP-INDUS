@@ -1,9 +1,7 @@
 const Radiologist = require("../Model/radiologistmodel");
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 const { AccessToken } = require("../auth/JWT_Tokens");
-require('dotenv').config();
-
 
 
 async function signup(req, res) {
@@ -68,48 +66,37 @@ async function signup(req, res) {
             message: "Invalid username or password",
           });
         } else {
-          const secretKey = process.env.SECRET_KEY;
+          // const secretKey = process.env.SECRET_KEY;
   
-          const token = jwt.sign({ radiologist }, secretKey, {
-            expiresIn: "1hr",
-          });
-          console.log(token);
+          // const token = jwt.sign({ radiologist }, secretKey, {
+          //   expiresIn: "1hr",
+          // });
+          // console.log(token);
   
-          const refToken = jwt.sign(
-            { radiologist },
-            process.env.REFRESH_TOKEN_SECRET,
-            {
-              expiresIn: "8hr",
-            }
-          );
-          console.log(token);
+          // const refToken = jwt.sign(
+          //   { radiologist },
+          //   process.env.REFRESH_TOKEN_SECRET,
+          //   {
+          //     expiresIn: "8hr",
+          //   }
+          // );
+          // console.log(token);
   
-          res
-            .cookie("access_token", token, {
-              httpOnly: true,
-            })
-            .cookie("refreshToken", refToken, {
-              httpOnly: true,
-            })
-            .status(200)
-  .send({
-    ok: true,
-    message: "Radiologist logged in successfully",
-    data: {
-      radiologist, // Send radiologist data if needed
-      accessToken: token, // Send the access token
-      refreshToken: refToken, // Send the refresh token
-    },
-  });
-          // const accessToken = await AccessToken(radiologist.id);
+          // res
+          //   .cookie("access_token", token, {
+          //     httpOnly: true,
+          //   })
+          //   .cookie("refreshToken", refToken, {
+          //     httpOnly: true,
+          //   })
+          const accessToken = await AccessToken(radiologist.id);
 
-          //   res.status(200)
-          //   .send({
-          //     ok: true,
-          //     message: "Radiologist login successfully",
-          //     data: radiologist,
-          //     accessToken : accessToken
-          //   });
+            res.status(200)
+            .send({
+              message: "Radiologist login successfully",
+              data: radiologist,
+              accessToken : accessToken
+            });
         }
       }
     } catch (error) {
