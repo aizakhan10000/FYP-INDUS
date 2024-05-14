@@ -1,77 +1,38 @@
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f4f4f4;
+.blue-background {
+  background-image: linear-gradient(to right, #c01414, #ffffff); /* Example gradient */
 }
 
-.login-form {
-  width: 100%;
-  max-width: 400px;
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+@keyframes blink {
+  from, to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
-.logo-container {
-  text-align: center;
-  margin-bottom: 10px;
-}
 
-.login-logo {
-  width: 120px;
+.img-fluid {
+  max-width: 150px;
   height: auto;
-  margin-bottom: 10px;
 }
 
-.tagline {
-  font-size: 16px;
-  font-weight: normal;
-  margin: 0;
+.card-title {
+color: #333; /* Subtle color for better readability */
+margin-bottom: 2rem; /* Increased spacing */
 }
 
-.form-group {
-  margin-bottom: 15px;
+input.form-control {
+margin-bottom: 1rem; /* Adjust input spacing */
+}
+ 
+a.text-decoration-none {
+color: #007bff; /* Bootstrap primary color for consistency */
 }
 
-.form-control {
-  display: block;
-  width: 100%;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-}
-
-.button-danger {
-  color: #fff;
-  background-color: #e8232a; /* Hex color for button background */
-  border-color: #e8232a; /* Ensures border color matches the background */
-}
-
-.button-danger:hover, .button-danger:focus {
-  background-color: #cc1f25; /* Slightly darker shade for hover */
-  border-color: #cc1f25;
-}
-
-.btn-block {
-  display: block;
-  width: 100%;
-}
-
-.login-links {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.login-links a {
-  color: #007bff;
-  text-decoration: none;
+.card-login {
+max-width: 450px; /* Limits the card width for larger screens */
+margin: auto; /* Centers the card on all axis */
+padding: 2rem;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
 }

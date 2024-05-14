@@ -1,25 +1,30 @@
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './LoginPage.css'; // Ensure this path is correct
-import logo from './logo.png'; // Ensure this is the correct path to your logo
+import logo from './logo.png'; // Update the path according to your project structure
 import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
   let navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
+  const [loginError, setLoginError] = useState(''); // State to handle login errors
 
   const handleSubmit = (event) => {
-    console.log("This has been called!!!!!!!!!!");
     event.preventDefault();
+    // Reset login error state on each submission
     setLoginError('');
 
-    fetch('http://localhost:3000/api/login', { // Modify the URL based on your backend API
+    // Using fetch to POST login details
+    fetch('http://localhost:3000/radiologist/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({
+        username,
+        password,
+      }),
     })
     .then(response => {
       if (!response.ok) {
@@ -28,61 +33,59 @@ function LoginPage() {
       return response.json();
     })
     .then(data => {
+      console.log('Login successful', data);
+      // Navigate to dashboard or other intended route upon successful login
       navigate("/dashboard");
     })
     .catch(error => {
-      console.log("ERRRRORRR!!!!!!!");
-      setLoginError('Login failed. Please check your credentials and try again.');
+      console.error('Login error:', error);
+      setLoginError('Failed to login. Please check your credentials and try again.');
     });
   };
 
   return (
-    <div className="login-container">
-      <form onSubmit={handleSubmit} className="login-form">
-        <div className="logo-container">
-          <img src={logo} alt="Indus Hospital Logo" className="login-logo" />
-          <div style={{ marginTop: "10px" }}></div>  {/* Adds space between logo and tagline */}
-          
+    <div className="container-fluid h-100">
+      <div className="row h-100">
+        <div className="col-md-6 blue-background d-flex flex-column justify-content-center align-items-center text-white min-vh-100">
+          <img src={logo} alt="Indus Hospital & Health Network Logo" className="img-fluid mb-4" />
+          <h1>INDUS HOSPITAL</h1>
+          <h2>HEALTH NETWORK</h2>
+          <p>Faith</p>
+          <p>Absolute belief that all means are from the Almighty</p>
         </div>
-
-        <div className="logo-container">
-          {/* <img src={logo} alt="Indus Hospital Logo" className="login-logo" /> */}
-          <h4 className="tagline">INDUS HOSPITAL HEALTH NETWORK</h4>
-          <div style={{ marginTop: "10px" }}></div>  {/* Adds space between logo and tagline */}
-          
+        <div className="col-md-6 d-flex flex-column justify-content-center align-items-center">
+          <div className="card-login w-100 p-4">
+            <h3 className="card-title text-center mb-4">Login Screen</h3>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="username"
+                  placeholder="Name"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+              <div className="mb-3">
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              {loginError && <div className="alert alert-danger" role="alert">{loginError}</div>}
+              <div className="d-flex justify-content-between align-items-center mb-4">
+                <a href="#forgot-password" className="text-decoration-none">Forgot Password?</a>
+              </div>
+              <button type="submit" className="btn btn-primary w-100">Login</button>
+            </form>
+          </div>
         </div>
-
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            className="form-control"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            className="form-control"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {loginError && <div className="alert alert-danger">{loginError}</div>}
-        <button type="submit" className="btn button-danger btn-block">Log In</button>
-        <div className="login-links">
-          <a href="/forgot-password">Forgot Password?</a>
-          <a href="/signup">Sign Up</a>
-        </div>
-      </form>
+      </div>
     </div>
   );
 }
