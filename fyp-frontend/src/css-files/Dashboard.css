@@ -1,53 +1,125 @@
-/* Dashboard.css */
+/* Main dashboard layout */
+.dashboard {
+  margin-left: 250px; /* Assuming sidebar width is fixed at 250px */
+  padding: 20px;
+  min-height: 100vh; /* Ensure it fills the vertical space */
+  background-color: #fff; /* Light background for contrast with the sidebar */
+  color: #333; /* Darker text for readability */
+}
 
-/* Soft Blue Background */
-.bg-primary-soft-blue {
-    background-color: #e3f2fd; /* Light blue background */
-  }
-  
-  .fade-in {
-    animation: fadeInAnimation ease 1s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-  }
-  
-  @keyframes fadeInAnimation {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-  
-  .card, .list-group-item, .table {
-    transition: transform 0.2s; /* Animation for hover */
-  }
-  
-  .card:hover, .list-group-item:hover, .table tr:hover {
-    transform: scale(1.03); /* Slightly scale up on hover */
-  }
-  
-  .list-group-item, .table th, .table td {
-    background-color: #f1f8fe; /* Very light blue for list items and table cells */
-  }
-  
-  .table th {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background-color: #e3f2fd;
-  }
-  
-  /* Ensures the sticky header isn't transparent */
-  .table thead th {
-    background-color: #e3f2fd;
-  }
+/* Header within the dashboard */
+.dashboard-header {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e2e2; /* Light line for separation */
+}
 
-  .custom-button {
-    background-color: #e3f2fd !important;
-    border-color: #e3f2fd !important;
-    color: #000 !important; /* Ensure text color is readable, adjust as needed */
+/* Content area styling */
+.dashboard-content {
+  padding: 20px;
+  background-color: #f8f9fa; /* Slightly off-white for the content area */
+  border-radius: 8px; /* Optional: rounded corners for content boxes */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadows for depth */
+}
+
+/* Adjustments for text and other elements */
+.text-highlight {
+  color: #661c3a; /* Use sidebar's main color for highlighting text or elements */
+}
+
+/* Buttons styling to match the sidebar */
+.button {
+  background-color: #661c3a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #550e30; /* Darker shade for hover effect */
+}
+
+/* Table and other component styling */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+/* Ensure responsiveness */
+@media (max-width: 768px) {
+  .dashboard {
+      margin-left: 0; /* Sidebar likely collapses or hides on smaller screens */
   }
-  
-  
+}
+
+.action-button {
+  background-color: #e8232a; /* Your specified button color */
+  border: none;
+  color: white;
+}
+
+/* Ensuring no blue color appears on hover */
+.action-button:hover, .action-button:focus {
+  background-color: #cc1f25; /* Slightly darker shade for hover, adjust as necessary */
+  border-color: #cc1f25; /* Ensures no border color change */
+  color: white; /* Keeps text color consistent */
+}
+
+/* Additional styles to override Bootstrap defaults when focused (clicked state) */
+.action-button:focus, .action-button:active {
+  box-shadow: none; /* Removes Bootstrap shadow */
+  background-color: #cc1f25;
+  border-color: #cc1f25;
+}
+
+.image-upload-box {
+  width: 300px; /* Fixed width */
+  height: 300px; /* Fixed height */
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Ensures the image does not overflow the boundaries */
+  margin-bottom: 20px; /* Space below the box */
+}
+
+.image-upload-box img {
+  max-width: 100%; /* Ensures image does not exceed the box width */
+  max-height: 100%; /* Ensures image does not exceed the box height */
+  display: block; /* Removes bottom margin/gap */
+  object-fit: contain; /* Ensures the image is scaled correctly */
+}
+
+.button-danger {
+  background-color: #e8232a; /* Hex color for button background */
+  border-color: #e8232a; /* Ensures border color matches the background */
+}
+
+.button-danger:hover, .button-danger:focus {
+  background-color: #cc1f25; /* Slightly darker shade for hover, adjust as necessary */
+  border-color: #cc1f25;
+}
+
+.blurred {
+  filter: blur(5px);
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.file-item .remove-btn {
+  margin-left: 20px; /* Adjust as necessary for fixed distance */
+}

@@ -12,8 +12,10 @@ import GenerateReport from './GenerateReport';
 import PatientHistory from './PatientHistory';
 import CreatePatient from './CreatePatient';
 import Homepage from './Homepage';
-
-
+import UploadImages from './BulkUpload';
+import Setting from './Setting';
+import Result from './Results';
+import AddPatient from './AddPatient';
 function App() {
   return (
     <Router>
@@ -28,6 +30,10 @@ function App() {
           <Route path="/patient-history" element={<PatientHistory />} />
           <Route path="/report" element={<GenerateReport />} />
           <Route path="/create-patient" element={<CreatePatient />} />
+          <Route path="/upload" element={<UploadImages />} />
+          <Route path="/setting" element={<Setting />} />
+          <Route path="/result" element={<Result />} />
+          <Route path="/patient-add" element={<AddPatient />} />
           {/* You can add more Route components here for other paths */}
         </Routes>
       </div>

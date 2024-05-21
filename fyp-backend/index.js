@@ -18,7 +18,6 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 // Connect to your Atlas cluster
 // const client = new MongoClient(url);
-
 // console.log(process.env)
 
 app.use(bodyParser.urlencoded({extended : true}));
