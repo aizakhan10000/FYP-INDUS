@@ -15,7 +15,7 @@ function Sidebar() {
     <div className="sidebar p-3" style={{ fontSize: '1.2rem', gridColumn: 'span 2' }}>
       <div className="profile mb-3 d-flex align-items-center">
         <img src={profileImage} alt="Profile" className="rounded-circle mr-2" width="50" height="50" />
-        <span className="profile-name">{user ? user.name : 'Guest'}</span>
+        <span className="profile-name">Hello {user ? user.name : 'Guest'}!</span>
       </div>
       <ul className="options">
         <li className="option mb-2">

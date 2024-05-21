@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose')
 const createError = require("http-errors")
 const XRay = require("../Model/xRayModel");
-const FormData = require('form-data');
 const fs = require('fs');
 const path = require('path');
 const axios = require("axios")
