@@ -73,7 +73,6 @@ async function createPatient(req,res) {
       }
       
     module.exports = {
-     
       createPatient,
       getAllPatients,
       getPatientById

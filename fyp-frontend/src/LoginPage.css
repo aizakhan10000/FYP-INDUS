@@ -1,38 +1,38 @@
 .blue-background {
-    background-image: linear-gradient(to right, #007bff, #28a745); /* Example gradient */
-  }
-  
-  @keyframes blink {
-    from, to {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.8;
-    }
-  }
+  background-image: linear-gradient(to right, #c01414, #ffffff); /* Example gradient */
+}
 
-  
-  .img-fluid {
-    max-width: 150px;
-    height: auto;
+@keyframes blink {
+  from, to {
+    opacity: 1;
   }
+  50% {
+    opacity: 0.8;
+  }
+}
 
-  .card-title {
-  color: #333; /* Subtle color for better readability */
-  margin-bottom: 2rem; /* Increased spacing */
+
+.img-fluid {
+  max-width: 150px;
+  height: auto;
+}
+
+.card-title {
+color: #333; /* Subtle color for better readability */
+margin-bottom: 2rem; /* Increased spacing */
 }
 
 input.form-control {
-  margin-bottom: 1rem; /* Adjust input spacing */
+margin-bottom: 1rem; /* Adjust input spacing */
 }
-   
+ 
 a.text-decoration-none {
-  color: #007bff; /* Bootstrap primary color for consistency */
+color: #007bff; /* Bootstrap primary color for consistency */
 }
 
 .card-login {
-  max-width: 450px; /* Limits the card width for larger screens */
-  margin: auto; /* Centers the card on all axis */
-  padding: 2rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+max-width: 450px; /* Limits the card width for larger screens */
+margin: auto; /* Centers the card on all axis */
+padding: 2rem;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
 }
