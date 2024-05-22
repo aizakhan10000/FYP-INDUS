@@ -42,12 +42,12 @@ function Sidebar() {
         </li>
       </ul>
       {/* User profile at the bottom */}
-      <div className="profile d-flex align-items-center">
+      {/* <div className="profile d-flex align-items-center">
         <img src={profileImage} alt="Profile" className="rounded-circle mr-2" width="50" height="50" />
         <div style={{ color: 'white' }}>
           <div>Tim Cook</div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
