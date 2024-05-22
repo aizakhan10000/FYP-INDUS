@@ -1,16 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Card, Button, Form, Image, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css-files/Dashboard.css'; // Adjust if necessary
-import Sidebar from './Screens/Sidebar'; // Ensure the correct path
+import './css-files/Dashboard.css';
+import Sidebar from './Screens/Sidebar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Patients = () => {
   let navigate = useNavigate();
   const [patients, setPatients] = useState([]);
+  const [filteredPatients, setFilteredPatients] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDate, setSelectedDate] = useState(null);
   const [modalShow, setModalShow] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [notes, setNotes] = useState('');
@@ -18,17 +25,17 @@ const Patients = () => {
   const [showGenerateReport, setShowGenerateReport] = useState(false);
   const [reportResult, setReportResult] = useState('');
   const fileInputRef = useRef();
+  const [hover, setHover] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:3000/patient/getAllPatients') // Adjust your API endpoint accordingly
+    fetch('http://localhost:3000/patient/getAllPatients')
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch');
-        }
+        if (!response.ok) throw new Error('Failed to fetch');
         return response.json();
       })
       .then(data => {
-        setPatients(data.data.patients); // Adjust based on your actual response structure
+        setPatients(data.data.patients);
+        setFilteredPatients(data.data.patients);
         setIsLoading(false);
       })
       .catch(error => {
@@ -37,6 +44,23 @@ const Patients = () => {
         setIsLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    const results = patients.filter(patient => {
+      const matchesName = patient.name.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesDate = selectedDate ? new Date(patient.visitDate).toDateString() === new Date(selectedDate).toDateString() : true;
+      return matchesName && matchesDate;
+    });
+    setFilteredPatients(results);
+  }, [searchTerm, selectedDate, patients]);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
 
   const handleExplore = (patient) => {
     setSelectedPatient(patient);
@@ -99,10 +123,30 @@ const Patients = () => {
             <div className="container-fluid pt-4 fade-in">
               <div className="row">
                 <div className="col-12 mt-4">
-
                   <h2>Patient List</h2>
-                  {/* <Button variant="primary" onClick={goToAddPatient} className="mb-3">Add Patient</Button> */}
-                  <Button variant="danger" onClick={goToAddPatient} style={{ backgroundColor: '#e8232a' }}>Add Patient</Button>
+                  <Form inline>
+                    <Form.Control
+                      type="text"
+                      placeholder="Search patients..."
+                      className="mr-sm-2"
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                      style={{ borderRadius: '30px', marginRight: '10px' }}
+                    />
+                    <DatePicker
+                      selected={selectedDate}
+                      onChange={handleDateChange}
+                      customInput={<Button style={{ borderRadius: '0 30px 30px 0' , backgroundColor: hover ? '#cc1f25' : '#e8232a',
+                      borderColor: hover ? '#cc1f25' : '#e8232a',
+                      color: 'white'}} onMouseEnter={() => setHover(true)}
+                      onMouseLeave={() => setHover(false)}
+                      onFocus={() => setHover(true)}
+                      onBlur={() => setHover(false)}><FontAwesomeIcon icon={faCalendarAlt} /></Button>}
+                      className="form-control"
+                      style={{ borderRadius: '30px', width: 'auto' }}
+                    />
+                    <Button variant="danger" onClick={goToAddPatient} style={{ backgroundColor: '#e8232a', marginLeft: '10px' }}>Add Patient</Button>
+                  </Form>
                   <table className="table">
                     <thead>
                       <tr>
@@ -115,7 +159,7 @@ const Patients = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {patients.map((patient) => (
+                      {filteredPatients.map(patient => (
                         <tr key={patient._id}>
                           <td>{patient.name}</td>
                           <td>{patient.city}</td>
@@ -135,7 +179,6 @@ const Patients = () => {
           </div>
         </div>
       </div>
-
       {selectedPatient && (
         <Modal show={modalShow} onHide={handleClose} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
           <Modal.Header closeButton>
