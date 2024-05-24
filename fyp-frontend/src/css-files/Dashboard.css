@@ -123,3 +123,46 @@
 .file-item .remove-btn {
   margin-left: 20px; /* Adjust as necessary for fixed distance */
 }
+
+
+.dashboard-container {
+  padding: 20px;
+}
+
+.card {
+  margin-bottom: 20px; /* Adds space between cards */
+}
+
+.list-group-item {
+  background-color: #f8f9fa; /* Light background for list items */
+}
+
+/* Additional styles for calendar and charts */
+.recharts-surface {
+  box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Adds subtle shadow around the chart */
+}
+
+.react-calendar {
+  border: none;
+  max-width: 100%;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.list-group-item {
+  background-color: #f8f9fa; /* Light background for list items */
+  border: none; /* Removes default border */
+  padding: 10px;
+}
+
+.profile-pic {
+  width: 40px; /* Set the size of the picture */
+  height: 40px; /* Set the size of the picture */
+  border-radius: 50%; /* Make the picture circular */
+  margin-right: 10px; /* Add space between the picture and the text */
+  vertical-align: middle; /* Align the picture with the text */
+}
+
+.table {
+  margin-top: 20px; /* Add some space above the table */
+}
