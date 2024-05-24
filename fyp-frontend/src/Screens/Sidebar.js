@@ -5,7 +5,8 @@ import { faHome, faList, faUpload, faCog, faSignOutAlt } from '@fortawesome/free
 import { Link } from 'react-router-dom';
 import profileImage from '../profile.jpg'; // Adjust the path as needed
 import logo from '../logo.png'; // Logo import
-import '../css-files/Sidebar.css'; // Adjust the path as needed
+// import '../css-files/Sidebar.css'; // Adjust the path as needed\
+import '../css-files/Sidebar.css'
 
 function Sidebar() {
   // const [userName, setUserName] = useState('');
