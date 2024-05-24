@@ -5,6 +5,12 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css-files/Dashboard.css';
 import Sidebar from './Screens/Sidebar';
+import p1 from './patients/1.jpg';
+import p2 from './patients/2.jpg';
+import p3 from './patients/3.jpg';
+import p4 from './patients/4.jpg';
+import p5 from './patients/5.jpg';
+
 
 function Dashboard() {
     const stats = [
@@ -19,11 +25,11 @@ function Dashboard() {
     ];
 
     const appointments = [
-        { name: 'John Doe', time: '08:00 AM', img: 'https://via.placeholder.com/50' },
-        { name: 'Jane Smith', time: '09:00 AM', img: 'https://via.placeholder.com/50' },
-        { name: 'Emily Johnson', time: '10:00 AM', img: 'https://via.placeholder.com/50' },
-        { name: 'Chris Lee', time: '11:00 AM', img: 'https://via.placeholder.com/50' },
-        { name: 'Sara Wilson', time: '12:00 PM', img: 'https://via.placeholder.com/50' },
+        { name: 'John Doe', time: '08:00 AM', img: p2 },
+        { name: 'Jane Smith', time: '09:00 AM', img: p1 },
+        { name: 'Emily Johnson', time: '10:00 AM', img: p3 },
+        { name: 'Chris Lee', time: '11:00 AM', img: p4 },
+        { name: 'Sara Wilson', time: '12:00 PM', img: p5 },
     ];
 
     return (
