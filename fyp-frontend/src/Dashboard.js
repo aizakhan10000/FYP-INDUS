@@ -1,109 +1,106 @@
 import React from 'react';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css-files/Dashboard.css'; // Import the CSS file here
-import Sidebar from './Screens/Sidebar'; // Assuming Sidebar.js is in the same directory
+import './css-files/Dashboard.css';
+import Sidebar from './Screens/Sidebar';
+import p1 from './patients/1.jpg';
+import p2 from './patients/2.jpg';
+import p3 from './patients/3.jpg';
+import p4 from './patients/4.jpg';
+import p5 from './patients/5.jpg';
+
 
 function Dashboard() {
-  
-  const stats = [
-    { title: 'Registered Patient', value: 531, icon: '👤' },
-    { title: 'Completed Appointments', value: 247, icon: '✔️' },
-    { title: 'Referrals', value: 67, icon: '🔗' },
-  ];
+    const stats = [
+        { title: 'Registered Patients', value: 531, icon: '👤' },
+        { title: 'Completed Appointments', value: 247, icon: '✔️' },
+        { title: 'Referrals', value: 67, icon: '🔗' },
+    ];
 
-  const schedule = [
-    { time: '8:00', name: 'Laura Jeans' },
-    { time: '9:00', name: 'Will Smith' },
-    { time: '10:00', name: 'Samira Khan' },
-    
-  ];
+    const reviews = [
+        { name: 'Pneumonia', value: 200, fill: '#8884d8' },
+        { name: 'Normal', value: 800, fill: '#83a6ed' },
+    ];
 
-  const patients = [
-    { id: '001', name: 'X-Ray Patient, Test_001', status: 'In Progress', doctor: 'Dr. Smith', images: 'Yes', date: 'Today' },
-    { id: '002', name: 'X-Ray Patient, Test_002', status: 'Scheduled', doctor: 'Dr. Johnson', images: 'No', date: 'Today' },
-    
-  ];
+    const appointments = [
+        { name: 'John Doe', time: '08:00 AM', img: p2 },
+        { name: 'Jane Smith', time: '09:00 AM', img: p1 },
+        { name: 'Emily Johnson', time: '10:00 AM', img: p3 },
+        { name: 'Chris Lee', time: '11:00 AM', img: p4 },
+        { name: 'Sara Wilson', time: '12:00 PM', img: p5 },
+    ];
 
-  return (
-    <div className="container-fluid">
-      <div className="row">
-        {/* Sidebar */}
-        <div className="col-md-2 p-0">
-          <Sidebar />
-        </div>
-
-        {/* Main Content */}
-        <div className="col-md-10">
-          <div className="dashboard-container">
-            {/* Header */}
-            <div className="bg-primary-soft-blue text-dark text-center py-3 fade-in">
-              <h1>Radiologists Dashboard Screen</h1>
-            </div>
-
-            {/* Main Content */}
-            <div className="container-fluid pt-4 fade-in">
-              <div className="row">
-                {/* Statistics Cards */}
-                {stats.map((stat) => (
-                  <div className="col-md-4 mb-3" key={stat.title}>
-                    <div className="card text-center fade-in">
-                      <div className="card-body">
-                        <h5 className="card-title">{stat.title}</h5>
-                        <p className="card-text">
-                          {stat.icon} {stat.value}
-                        </p>
-                      </div>
+    return (
+        <div className="container-fluid">
+            <div className="row">
+                <div className="col-md-2 p-0">
+                    <Sidebar />
+                </div>
+                <div className="col-md-10">
+                    <div className="dashboard-container">
+                        <div className="bg-primary-soft-blue text-dark text-center py-3 fade-in">
+                            <h1>Radiologist Dashboard</h1>
+                        </div>
+                        <div className="container-fluid pt-4 fade-in">
+                            <div className="row">
+                                {stats.map((stat, index) => (
+                                    <div className="col-md-4 mb-3" key={index}>
+                                        <div className="card text-center">
+                                            <div className="card-body">
+                                                <h5 className="card-title">{stat.title}</h5>
+                                                <p className="card-text">{stat.icon} {stat.value}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                                <div className="col-md-6">
+                                    <h2>Reviews</h2>
+                                    <ResponsiveContainer width="100%" height={300}>
+                                        <PieChart>
+                                            <Pie dataKey="value" data={reviews} cx="50%" cy="50%" outerRadius={100} label>
+                                                {reviews.map((entry, index) => (
+                                                    <Cell key={`cell-${index}`} fill={entry.fill} />
+                                                ))}
+                                            </Pie>
+                                            <Tooltip />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                </div>
+                                <div className="col-md-6">
+                                    <h2>Today's Appointments</h2>
+                                    <table className="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {appointments.map((appt, index) => (
+                                                <tr key={index}>
+                                                    <td>
+                                                        <img src={appt.img} alt="profile" className="profile-pic"/>
+                                                        {appt.name}
+                                                    </td>
+                                                    <td>{appt.time}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div className="col-md-12">
+                                    <h2>Calendar</h2>
+                                    <Calendar />
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                ))}
-
-                {/* Schedule */}
-                <div className="col-12 mt-4 bg-primary-light-red">
-                  <h2>Schedule</h2>
-                  <ul className="list-group fade-in">
-                    {schedule.map((appointment) => (
-                      <li className="list-group-item" key={appointment.time}>
-                        {appointment.time} - {appointment.name}
-                      </li>
-                    ))}
-                  </ul>
                 </div>
-
-                {/* Patient List Table */}
-                <div className="col-12 mt-4 bg-primary-light-red">
-                  <h2>Patient List</h2>
-                  <table className="table fade-in">
-                    <thead>
-                      <tr>
-                        <th>Patient Name</th>
-                        <th>Options</th>
-                        <th>Report Status</th>
-                        <th>Doctor Name</th>
-                        <th>Images Received</th>
-                        <th>Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {patients.map((patient) => (
-                        <tr key={patient.id}>
-                          <td>{patient.name}</td>
-                          <td>{/* Options will go here */}</td>
-                          <td>{patient.status}</td>
-                          <td>{patient.doctor}</td>
-                          <td>{patient.images}</td>
-                          <td>{patient.date}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default Dashboard;

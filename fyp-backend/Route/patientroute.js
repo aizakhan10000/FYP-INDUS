@@ -8,7 +8,7 @@ const patientController = require('../Controller/patientcontrol');
 // router.post('/createPatient', verifyAccessToken, patientController.createPatient);
 router.post('/createPatient', patientController.createPatient);
 // router.get('/getAllPatients', verifyAccessToken, patientController.getAllPatients);
-router.get('/getAllPatients', patientController.getAllPatients);
+router.get('/getAllPatients',patientController.getAllPatients);
 router.get('/getPatientById/:id', patientController.getPatientById);
 
 
