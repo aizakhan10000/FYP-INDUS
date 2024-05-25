@@ -1,31 +1,61 @@
 const Appointment = require("../Model/appointmentmodel");
+const Patient = require('../Model/patientmodel'); // Adjust the path as necessary
+const Radiologist = require('../Model/radiologistmodel');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 async function createAppointment(req, res) {
-    try {
-        const { name, PatientID, gender, phoneNo, attended, radiologist, date } = req.body;
-        console.log("body", req.body);
+  try {
+      // Extract patient ID and radiologist ID from the request parameters
+      const patientId = req.params.patientId;
+      const radiologistId = req.params.radiologistId;
 
-        // Directly create the appointment without checking if it already exists
-        const appointment = await Appointment.create({
-            name,
-            PatientID,
-            gender,
-            phoneNo,
-            date,
-            attended,
-            radiologist
-        });
+      // Fetch patient details using the provided patientId
+      const patient = await Patient.findById(patientId);
+      if (!patient) {
+          return res.status(404).send("Patient not found");
+      }
 
-        console.log("Appointment created");
-        res.status(201).send("Appointment created");
-    } catch (error) {
-        console.log(error);
-        res.status(400).send("Error in creating appointment");
-    }
+      // Fetch radiologist details using the provided radiologistId
+      const radiologist = await Radiologist.findById(radiologistId);
+      if (!radiologist) {
+          return res.status(404).send("Radiologist not found");
+      }
+
+      // Extract appointment date and time from the request body
+      const { date, time } = req.body;
+      
+      // Parse the date and time strings
+      const appointmentDate = new Date(date);
+
+      const [timePart, modifier] = time.split(' ');
+      let [hours, minutes] = timePart.split(':').map(Number);
+      if (modifier === 'PM' && hours < 12) {
+          hours += 12;
+      }
+      if (modifier === 'AM' && hours === 12) {
+          hours = 0;
+      }
+
+      // Set the time on the appointmentDate object
+      appointmentDate.setHours(hours, minutes);
+
+      // Create the appointment using patient and radiologist details
+      const appointment = await Appointment.create({
+          patientname: patient.name,
+          gender: patient.gender,
+          phoneNo: patient.phoneNo,
+          radiologistname: radiologist.name,
+          date: appointmentDate,
+      });
+
+      console.log("Appointment created");
+      res.status(201).send("Appointment created");
+  } catch (error) {
+      console.log(error);
+      res.status(500).send("Error in creating appointment");
+  }
 }
-
     
     async function getAllAppointments(req, res) {
         try {
