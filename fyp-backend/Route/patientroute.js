@@ -6,9 +6,9 @@ const patientController = require('../Controller/patientcontrol');
 //const {verifyAccessToken} = require("../auth/JWT_Tokens");
 // const {verifyJwtToken} = require("../auth/tokenVerification")
 // router.post('/createPatient', verifyAccessToken, patientController.createPatient);
-router.post('/createPatient', verifyToken, patientController.createPatient);
+router.post('/createPatient', patientController.createPatient);
 // router.get('/getAllPatients', verifyAccessToken, patientController.getAllPatients);
-router.get('/getAllPatients', verifyToken,patientController.getAllPatients);
+router.get('/getAllPatients', patientController.getAllPatients);
 router.get('/getPatientById/:id', patientController.getPatientById);
 
 
