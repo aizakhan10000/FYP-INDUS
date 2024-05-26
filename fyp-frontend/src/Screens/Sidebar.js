@@ -5,7 +5,8 @@ import { faHome, faList, faUpload, faCog, faSignOutAlt } from '@fortawesome/free
 import { Link } from 'react-router-dom';
 import profileImage from '../profile.jpg'; // Adjust the path as needed
 import logo from '../logo.png'; // Logo import
-import '../css-files/Sidebar.css'; // Adjust the path as needed
+// import '../css-files/Sidebar.css'; // Adjust the path as needed\
+import '../css-files/Sidebar.css'
 
 function Sidebar() {
   // const [userName, setUserName] = useState('');
@@ -43,10 +44,10 @@ function Sidebar() {
       </ul>
       {/* User profile at the bottom */}
       <div className="profile d-flex align-items-center">
-        <img src={profileImage} alt="Profile" className="rounded-circle mr-2" width="50" height="50" />
-        <div style={{ color: 'white' }}>
+        {/* <img src={profileImage} alt="Profile" className="rounded-circle mr-2" width="50" height="50" /> */}
+        {/* <div style={{ color: 'white' }}>
           <div>Tim Cook</div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

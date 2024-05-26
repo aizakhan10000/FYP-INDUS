@@ -106,7 +106,8 @@ const AddPatient = () => {
                   </Form.Control>
                 </Form.Group>
                 <div className="text-center">
-                  <Button variant="primary" type="submit">
+                  <Button variant="primary" type="submit" style={{ backgroundColor: '#e8232a', marginLeft: '10px' }}>
+                    
                     Add Patient
                   </Button>
                 </div>
