@@ -24,7 +24,7 @@ const PatientHistory = () => {
     };
 
     const handleBack = () => {
-        navigate("/patient-detail"); // Replace with your actual back navigation route
+        navigate("/patients"); // Replace with your actual back navigation route
     };
 
     // Function to handle row click
@@ -53,7 +53,7 @@ const PatientHistory = () => {
                                         <Form.Group controlId="searchDate">
                                             <Form.Control type="date" value={searchDate} onChange={e => setSearchDate(e.target.value)} />
                                         </Form.Group>
-                                        <Button variant="primary" type="submit">Search</Button>
+                                        <Button variant="primary" type="submit" className='button-danger'>Search</Button>
                                     </Form>
                                     <Table striped bordered hover>
                                         <thead>

@@ -193,10 +193,38 @@ async function countAttendedXrays(req, res) {
     }
 }
 
+async function getAllXrays(req, res) {
+    try {
+        // Fetch all X-Rays from the database
+        const xrays = await XRay.find({});
+        console.log(xrays);
+        
+        // Format the response to send necessary fields
+        const formattedXrays = xrays.map(xray => ({
+            xrayId: xray._id,
+            title: xray.title,
+            imageUrl: xray.image,
+            date: xray.date.toISOString().slice(0, 10) // Formats the date to YYYY-MM-DD
+        }));
+
+        res.status(200).json({
+            message: "Successfully retrieved all X-Rays",
+            xrays: formattedXrays
+        });
+    } catch (error) {
+        console.error("Error retrieving X-Rays:", error);
+        res.status(500).json({
+            message: "Failed to retrieve X-Rays",
+            error: error.message
+        });
+    }
+}
+
 module.exports={
     uploadXray,
     uploadMultipleXrays,
     viewXray,
     deleteXray,
-    countAttendedXrays
+    countAttendedXrays,
+    getAllXrays
 }

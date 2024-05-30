@@ -15,7 +15,7 @@
   background-color: #e9242b; /* Slightly different background for logo container */
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start; 
   padding: 10px 0;
 }
 
@@ -62,4 +62,8 @@
 
 .profile-name {
   color: white; /* Ensure the profile name is readable */
+}
+
+.icon-spacing {
+  margin-right: 8px; /* Adjust the spacing as needed */
 }

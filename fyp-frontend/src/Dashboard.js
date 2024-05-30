@@ -14,9 +14,9 @@ import p5 from './patients/5.jpg';
 
 function Dashboard() {
     const stats = [
-        { title: 'Registered Patients', value: 531, icon: '👤' },
-        { title: 'Completed Appointments', value: 247, icon: '✔️' },
-        { title: 'Referrals', value: 67, icon: '🔗' },
+        { title: 'Registered Patients', value: 2, icon: '👤' },
+        { title: 'Completed Appointments', value: 15, icon: '✔️' },
+        { title: 'Referrals', value: 1, icon: '🔗' },
     ];
 
     const reviews = [
@@ -25,11 +25,11 @@ function Dashboard() {
     ];
 
     const appointments = [
-        { name: 'John Doe', time: '08:00 AM', img: p2 },
-        { name: 'Jane Smith', time: '09:00 AM', img: p1 },
-        { name: 'Emily Johnson', time: '10:00 AM', img: p3 },
-        { name: 'Chris Lee', time: '11:00 AM', img: p4 },
-        { name: 'Sara Wilson', time: '12:00 PM', img: p5 },
+        { name: 'ali', time: '08:00 AM', img: p2 },
+        { name: 'aiza@', time: '09:00 AM', img: p1 },
+        { name: 'aiza@', time: '10:00 AM', img: p1 },
+        { name: 'ali', time: '11:00 AM', img: p2 },
+        { name: 'aiza@', time: '12:00 PM', img: p1 },
     ];
 
     return (
