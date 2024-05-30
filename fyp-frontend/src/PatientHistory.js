@@ -11,9 +11,9 @@ const PatientHistory = () => {
 
     // Dummy data for patient X-ray history
     const xrayResults = [
-        { id: 1, date: '2023-03-10', result: 'No issues found', doctor: 'Dr. Smith' },
-        { id: 2, date: '2023-02-24', result: 'Minor fracture detected', doctor: 'Dr. Johnson' },
-        { id: 3, date: '2023-01-15', result: 'Signs of infection', doctor: 'Dr. Clark' },
+        { id: 1, date: '2023-03-10', result: 'Normal', doctor: 'Dr. Usama' },
+        { id: 2, date: '2023-02-24', result: 'Pneumonia', doctor: 'Dr. Usama' },
+        { id: 3, date: '2023-01-15', result: 'Pneumonia', doctor: 'Dr. Usama' },
         // More results...
     ].sort((a, b) => b.date.localeCompare(a.date)); // Sort by date, newest first
 

@@ -15,14 +15,14 @@ const XRay = () => {
     const fetchXrays = async () => {
         console.log("FETCHing xrays")
         try {
-          const response = await fetch('/api/xrays', {
+          const response = await fetch('localhost:3000/xray/xrays', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
             }
           });
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`Errorrrrrr.HTTP error! status: ${response.status}`);
           }
           // Try to parse the response as JSON
           try {
