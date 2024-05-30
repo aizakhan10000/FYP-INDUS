@@ -3,32 +3,34 @@ const bcrypt = require("bcrypt");
 
 const appointmentSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      require: true,
-      unique: true,
-    },
-    PatientID: {
-      type: String,
-      require: true,
-      unique: true,
-    },
+    
     phoneNo: {
       type: String,
       require: true,
     },
-    attended: {
-      type: Boolean,
+    patientname: {
+      type: String,
       require: true,
     },
     gender: {
       type: String,
       require: true,
     },
+    radiologistname:{
+      type:String,
+      require:true,
+    },
     date:{
         type:Date,
-        default:Date.now,
+        require: true,
     },
+    patient: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "patient",
+        default: [],
+      },
+    ],
     radiologist: [
       {
         type: mongoose.Schema.ObjectId,
