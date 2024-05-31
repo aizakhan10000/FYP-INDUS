@@ -17,6 +17,14 @@
   height: auto;
 }
 
+.p{
+  font-family: 'Times New Roman', Times, serif;
+  font-style: italic;
+  font-weight: 300;
+  color: #003399;
+  font-size: large;
+}
+
 .card-title {
 color: #333; /* Subtle color for better readability */
 margin-bottom: 2rem; /* Increased spacing */
@@ -35,4 +43,9 @@ max-width: 450px; /* Limits the card width for larger screens */
 margin: auto; /* Centers the card on all axis */
 padding: 2rem;
 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+/* In your LoginPage.css */
+.disabled-link {
+  pointer-events: none;
+  color: grey;
 }

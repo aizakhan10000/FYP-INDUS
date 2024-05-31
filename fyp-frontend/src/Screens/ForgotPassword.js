@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setUser } from '../actions/userActions'; // Define setUser action
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css-files/LoginPage.css'; // Ensure this path is correct
 import logo from '../logo.png'; // Update the path according to your project structure
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const textVariations = [
   {
@@ -26,61 +26,53 @@ const textVariations = [
 ];
 
 
-function LoginPage() {
-    const dispatch = useDispatch();
-  let navigate = useNavigate();
+function ForgotPassword() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState(''); // State to handle login errors
+  const [message, setMessage] = useState('');
+  const [userId, setUserId] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex(prevIndex => (prevIndex + 1) % textVariations.length);
     }, 3000); // Change text every 3 seconds
     return () => clearInterval(interval); // Clean up interval on component unmount
   }, []);
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    if (id) {
+      setUserId(id);
+    }
+  }, [location]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Reset login error state on each submission
-    setLoginError('');
-    // Using fetch to POST login details
+    // Using fetch to POST forgot password details
     try {
       // Using fetch to POST login details
-      const response = await fetch('http://localhost:3000/radiologist/login', {
+      const response = await fetch(`http://localhost:3000/radiologist/forgot-password/${userId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username,
           password,
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Login failed');
+        throw new Error('Password reset failed');
       }
-
-      // Assuming user data is returned from login API
-      const userData = await response.json();
-      // console.log("USER DATA: ", userData);
-      const Data = userData.data
-    
-      console.log("USER DATA: ", Data);
-
-      // Dispatch action to set user data in Redux store
-      dispatch(setUser(Data));
-
-      console.log('Login successful', userData);
-      // Navigate to dashboard or other intended route upon successful login
-      navigate("/dashboard");
+      setMessage('Password updated successfully. Please log in with your new password.');
+      // Redirect to login page after 2 seconds
+      setTimeout(() => navigate('/'), 2000);
     } catch (error) {
-      console.error('Login error:', error);
-      setLoginError('Failed to login. Please check your credentials and try again.');
+        setMessage('Failed to update password. Please try again.');
     }
   };
-
   const { title, description } = textVariations[currentIndex];
   return (
     <div className="container-fluid h-100">
@@ -94,41 +86,21 @@ function LoginPage() {
         </div>
         <div className="col-md-6 d-flex flex-column justify-content-center align-items-center">
           <div className="card-login w-100 p-4">
-            <h3 className="card-title text-center mb-4">Login Screen</h3>
+            <h3 className="card-title text-center mb-4">Update Password</h3>
             <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="username"
-                  placeholder="Name"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </div>
               <div className="mb-3">
                 <input
                   type="password"
                   className="form-control"
                   id="password"
-                  placeholder="Password"
+                  placeholder="Enter new password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              {loginError && <div className="alert alert-danger" role="alert">{loginError}</div>}
-              <div className="d-flex justify-content-between align-items-center mb-4">
-              <a
-                  href={username ? `/forgot-password?id=${username}` : "#"}
-                  className={`text-decoration-none ${!username && "disabled-link"}`}
-                  onClick={(e) => !username && e.preventDefault()}
-                  
-                >
-                  Forgot Password?
-                </a>
-              </div>
-              <button type="submit" className="btn btn-primary w-100">Login</button>
+              <button type="submit" className="btn btn-primary w-100">Update Password</button>
             </form>
+            {message && <p>{message}</p>}
           </div>
         </div>
       </div>
@@ -136,4 +108,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default ForgotPassword;

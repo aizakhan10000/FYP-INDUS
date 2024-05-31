@@ -16,6 +16,7 @@ import UploadImages from './Screens/BulkUpload';
 import Setting from './Setting';
 import Result from './Screens/Results';
 import AddPatient from './Screens/AddPatient';
+import ForgotPassword from './Screens/ForgotPassword';
 function App() {
   return (
     <Router>
@@ -23,6 +24,7 @@ function App() {
         <Routes>
           {/* <Route path="/" element={<Homepage />} /> */}
           <Route path="/" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/patients" element={<Patients />} />
           {/* <Route path="/patient-detail" element={<PatientDetails />} /> */}
