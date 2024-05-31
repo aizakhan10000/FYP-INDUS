@@ -45,6 +45,9 @@ const patientSchema = new mongoose.Schema(
         // default: [],
       },
     ],
+    status:{
+      type: String
+    }
   }
   
 );

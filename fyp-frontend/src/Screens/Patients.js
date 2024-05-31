@@ -27,6 +27,7 @@ const Patients = () => {
   const [showGenerateReport, setShowGenerateReport] = useState(false);
   const [classificationResult, setClassificationResult] = useState(null);
   const [showGeneratePdf, setShowGeneratePdf] = useState(false);
+  const [xrayId, setXrayId] = useState('');
   // const [reportResult, setReportResult] = useState('');
   const fileInputRef = useRef();
   const [hover, setHover] = useState(false);
@@ -58,6 +59,12 @@ const Patients = () => {
     });
     setFilteredPatients(results);
   }, [searchTerm, selectedDate, patients]);
+
+  useEffect(() => {
+    if (xrayId) {
+      console.log("XRAY ID: ", xrayId);
+    }
+  }, [xrayId]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -100,10 +107,14 @@ const Patients = () => {
     console.log('Selected Image:', selectedImage); // Verify the file object
     formData.append('image', selectedImage);
     console.log('FormData:', formData.get('image')); // Verify the FormData object
+    const patientID = selectedPatient._id;
+    console.log("PATIENT ID: ", patientID);
     try {
-      const response = await axios.post('http://localhost:3000/xray/uploadXray', formData, {
+      const response = await axios.post(`http://localhost:3000/xray/uploadXray/${patientID}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
+      setXrayId(response.data.xray._id);
+      // console.log("XRAY ID: ", xrayId)
       setClassificationResult(JSON.stringify(response.data.result.prediction, null, 2));
       setShowGeneratePdf(true); // Show the "Generate PDF" button
       console.log("REPORT RESULT: ",classificationResult )
@@ -113,12 +124,33 @@ const Patients = () => {
       setShowGeneratePdf(false); // Hide the "Generate PDF" button if there's an error
     }
   };
-
+  const getStatusStyle = (status) => {
+    switch (status) {
+      case 'Not uploaded':
+        return { backgroundColor: 'blue', color: 'black' }; // Blue
+      case 'Normal':
+        return { backgroundColor: 'yellow', color: 'black' }; // Yellow
+      case 'Pneumonia':
+        return { backgroundColor: 'red', color: 'black' }; // Red
+      case 'Verified':
+        return { backgroundColor: 'green', color: 'black' }; // Green
+      default:
+        return {};
+    }
+  };
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   const goToAddPatient = () => {
     navigate('/patient-add');
+  };
+  const goToAddAppointment = () => {
+    navigate('/create-appointment',{
+      state:{
+        patient_id: selectedPatient._id,
+        xray_id: xrayId,
+      }
+    });
   };
 
   function ResultBox({ result }) {
@@ -182,6 +214,7 @@ const Patients = () => {
                     <thead>
                       <tr>
                         <th>Patient Name</th>
+                        <th>Status</th>
                         <th>City</th>
                         <th>Patient ID</th>
                         <th>Phone No</th>
@@ -193,6 +226,11 @@ const Patients = () => {
                       {filteredPatients.map(patient => (
                         <tr key={patient._id}>
                           <td>{patient.name}</td>
+                          <td>
+                            <span className="badge" style={{ ...getStatusStyle(patient.status), borderRadius: '5px', padding: '5px 10px' }}>
+                              {patient.status}
+                            </span>
+                          </td>
                           <td>{patient.city}</td>
                           <td>{patient.PatientID}</td>
                           <td>{patient.phoneNo}</td>
@@ -259,7 +297,7 @@ const Patients = () => {
           </Modal.Body>
           <Modal.Footer>
             <Button className="action-button" onClick={triggerFileInput}>Upload Xray</Button>
-            <Button className="action-button" onClick={() => console.log('Follow-up requests logic goes here.')}>Create Appointment</Button>
+            <Button className="action-button" onClick={goToAddAppointment} >Create Appointment</Button>
           </Modal.Footer>
         </Modal>
       )}

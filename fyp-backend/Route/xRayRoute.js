@@ -24,7 +24,7 @@ countAttendedXrays
 
 }= require("../Controller/xRayController");
 
-router.post("/uploadXRay",upload.single('image'),uploadXray)
+router.post("/uploadXRay/:id",upload.single('image'),uploadXray)
 router.post("/uploadMultipleXRays",upload.array('images',50),uploadMultipleXrays)
 router.get("/viewXray/:id", viewXray)
 // router.get("/viewXray", viewXray)

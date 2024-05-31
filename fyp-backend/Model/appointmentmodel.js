@@ -1,20 +1,19 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 
 const appointmentSchema = new mongoose.Schema(
   {
     radiologist_id : {      // x ray picture
-      type: Number,
+      type: mongoose.Types.ObjectId,
       required: true,
       ref : 'Radiologists'
   },
     patient_id: {
-      type: Number,
+      type: mongoose.Types.ObjectId,
       require: true,
       ref: 'Patients'
     },
     xray_id:{
-      type: Number,
+      type: mongoose.Types.ObjectId,
       require: true,
       ref: 'Xrays'
     },
@@ -28,7 +27,7 @@ const appointmentSchema = new mongoose.Schema(
     },
     completed:{
       type: Boolean,
-      require: true
+      // require: true
     }
   }
   

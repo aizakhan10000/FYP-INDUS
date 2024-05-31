@@ -4,12 +4,12 @@ const XRay = require("../Model/xRayModel")
 const reportModel = new mongoose.Schema({
     
     xray_id : {      // x ray picture
-        type: Number,
+        type: mongoose.Types.ObjectId,
         required: true,
         ref : 'XRay'
     },
     patient_id : {      // x ray picture
-        type: Number,
+        type: mongoose.Types.ObjectId,
         // required: true,
         ref : 'Patients'
     },
