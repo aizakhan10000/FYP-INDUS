@@ -17,6 +17,9 @@ import Setting from './Setting';
 import Result from './Screens/Results';
 import AddPatient from './Screens/AddPatient';
 import ForgotPassword from './Screens/ForgotPassword';
+
+// import AddPatient from './AddPatient';
+import XRay from './XRay';
 function App() {
   return (
     <Router>
@@ -37,6 +40,7 @@ function App() {
           <Route path="/setting" element={<Setting />} />
           <Route path="/result" element={<Result />} />
           <Route path="/patient-add" element={<AddPatient />} />
+          <Route path="/xray" element={<XRay />} />
           {/* You can add more Route components here for other paths */}
         </Routes>
       </div>

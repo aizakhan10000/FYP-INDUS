@@ -2,51 +2,54 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: flex-start; /* Aligns children at the top */
+  align-items: center; /* Centers items horizontally */
   font-size: 1.2rem;
-  color: white; /* Adjust the text color for better contrast */
-  background-color: #d40a11; /* Adjust the main background color as needed */
-  min-height: 100vh; /* Ensures it fills at least the full height of the viewport */
-  height: 100%; /* This can help extend the background with content */
+  background-color: #d40a11; /* Red background */
+  width: 250px; /* Fixed width */
+  min-height: 100vh; /* Full viewport height */
+  height: 100%;
+  padding: 20px 0; /* Padding on top and bottom */
+  box-sizing: border-box; /* Includes padding and border in the width and height */
 }
 
-/* Logo container with specific styling */
+/* Adjust if the logo is included and should be at the top */
 .logo-container {
-  background-color: #e9242b; /* Slightly different background for logo container */
   width: 100%;
-  display: flex;
-  justify-content: center;
   padding: 10px 0;
+  background-color: #e9242b;
 }
 
 .logo-container img {
-  width: 80px; /* Adjust the logo size as needed */
+  width: 80px;
   height: auto;
+  margin: auto; /* Centers the logo */
 }
 
 /* Navigation links styling */
 .options {
-  width: 100%;
-  list-style-type: none;
-  padding: 0;
+  width: 100%; /* Full width of the sidebar */
+  list-style-type: none; /* No bullets */
+  padding: 0; /* No padding */
+  margin: 0; /* No margin */
 }
 
 .nav-link {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center; /* Centering text and icons horizontally */
   width: 100%;
-  color: white; /* Adjust link text color for contrast */
+  color: white;
   text-decoration: none;
-  padding: 10px 0; /* Add padding for better clickable area */
+  padding: 10px 0; /* Padding for better touch */
 }
 
 .nav-link:hover {
-  background-color: #e9242b; /* Adjust hover color as needed */
-  color: white; /* Ensure text is readable on hover */
+  background-color: #e9242b;
+  color: white;
 }
 
-/* Profile styling */
+/* Profile section adjustment */
 .profile {
   width: 100%;
   display: flex;
@@ -57,9 +60,13 @@
 }
 
 .profile img {
-  margin-right: 10px;
+  margin-right: 10px; /* Space between image and text */
 }
 
 .profile-name {
-  color: white; /* Ensure the profile name is readable */
+  color: white;
+}
+
+.icon-spacing {
+  margin-right: 8px; /* Space between icon and label */
 }

@@ -30,7 +30,6 @@ const appointmentSchema = new mongoose.Schema(
       // require: true
     }
   }
-  
 );
 
 /*patientSchema.pre("save", function (next) {
