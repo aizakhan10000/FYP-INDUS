@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css-files/Homepage.css'; // Ensure you have this CSS file
+import '../css-files/Homepage.css'; // Ensure you have this CSS file
 
 // Importing the logos - adjust the path as necessary
 import indusLogo from './logo.png'; // The first logo you uploaded

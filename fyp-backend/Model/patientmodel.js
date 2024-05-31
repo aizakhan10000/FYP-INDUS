@@ -6,17 +6,16 @@ const patientSchema = new mongoose.Schema(
     name: {
       type: String,
       require: true,
-      unique: true,
     },
     city: {
       type: String,
       require: true,
     },
-    // PatientID: {
-    //   type: String,
-    //   require: true,
-    //   unique: true,
-    // },
+    PatientID: {
+      type: String,
+      require: true,
+      unique: true,
+    },
     phoneNo: {
       type: String,
       require: true,

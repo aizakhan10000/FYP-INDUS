@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Card, Button, Form, Image, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css-files/Dashboard.css';
-import Sidebar from './Screens/Sidebar';
+import '../css-files/Dashboard.css';
+import Sidebar from './Sidebar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
@@ -28,14 +28,15 @@ const Patients = () => {
   const [hover, setHover] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:3000/patient/getAllPatients')
+    axios.get('http://localhost:3000/patient/getAllPatients')
+      // .then(response => {
+      //   if (!response.ok) throw new Error('Failed to fetch');
+      //   return response.json();
+      // })
       .then(response => {
-        if (!response.ok) throw new Error('Failed to fetch');
-        return response.json();
-      })
-      .then(data => {
-        setPatients(data.data.patients);
-        setFilteredPatients(data.data.patients);
+        const patients = response.data.data.patients;
+        setPatients(patients);
+        setFilteredPatients(patients);
         setIsLoading(false);
       })
       .catch(error => {

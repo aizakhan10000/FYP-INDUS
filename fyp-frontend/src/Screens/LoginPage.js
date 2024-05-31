@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setUser } from './actions/userActions'; // Define setUser action
+import { setUser } from '../actions/userActions'; // Define setUser action
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './LoginPage.css'; // Ensure this path is correct
-import logo from './logo.png'; // Update the path according to your project structure
+import '../css-files/LoginPage.css'; // Ensure this path is correct
+import logo from '../logo.png'; // Update the path according to your project structure
 import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {

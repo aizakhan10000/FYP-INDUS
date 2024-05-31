@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import Sidebar from './Screens/Sidebar'; // Adjust the path as necessary
+import Sidebar from './Sidebar'; // Adjust the path as necessary
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css-files/Dashboard.css'; // Ensure the path is correct
+import '../css-files/Dashboard.css'; // Ensure the path is correct
 
 const CreatePatient = () => {
     const navigate = useNavigate();

@@ -3,13 +3,13 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css-files/Dashboard.css';
-import Sidebar from './Screens/Sidebar';
-import p1 from './patients/1.jpg';
-import p2 from './patients/2.jpg';
-import p3 from './patients/3.jpg';
-import p4 from './patients/4.jpg';
-import p5 from './patients/5.jpg';
+import '../css-files/Dashboard.css';
+import Sidebar from './Sidebar';
+import p1 from '../patients/1.jpg';
+import p2 from '../patients/2.jpg';
+import p3 from '../patients/3.jpg';
+import p4 from '../patients/4.jpg';
+import p5 from '../patients/5.jpg';
 
 
 function Dashboard() {
@@ -37,7 +37,7 @@ function Dashboard() {
             <div className="row">
                 <div className="col-md-2 p-0">
                     <Sidebar />
-                </div>
+                </div> 
                 <div className="col-md-10">
                     <div className="dashboard-container">
                         <div className="bg-primary-soft-blue text-dark text-center py-3 fade-in">

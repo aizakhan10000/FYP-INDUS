@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Sidebar from './Screens/Sidebar'; // Adjust the import path as necessary
+import Sidebar from './Sidebar'; // Adjust the import path as necessary
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const AddPatient = () => {
   const navigate = useNavigate();
@@ -10,10 +11,34 @@ const AddPatient = () => {
   const [formData, setFormData] = useState({
     name: '',
     city: '',
+    patientId:'',
     phoneNo: '',
     patientHistory: '',
     gender: ''
   });
+
+  const addPatient = async () =>{
+      try{
+        const response = await axios.post(`http://localhost:3000/patient/createPatient`
+        ,{
+          name: formData.name,
+          city : formData.city,
+          PatientID: formData.patientId,
+          patientHistory: formData.patientHistory,
+          phoneNo: formData.phoneNo,
+          gender: formData.gender
+        })
+        // if (!response.ok) {
+        //   throw new Error('Network response was not ok');
+        // }
+        // const data = await response.data();
+        console.log(response)
+        // setFormData(data.data.patient);
+      }
+      catch(error){
+        console.error('Error posting patient details:', error);
+      }
+    };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,10 +47,11 @@ const AddPatient = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    addPatient();
     // TODO: Add logic to submit the form data to the backend (e.g., via API)
-    console.log(formData);
+    // console.log(formData);
     // Redirect to dashboard or patient list page after successful submission
-    navigate('/dashboard');
+    navigate('/patients');
   };
 
   return (
@@ -48,6 +74,19 @@ const AddPatient = () => {
                         placeholder="Enter patient name"
                         name="name"
                         value={formData.name}
+                        onChange={handleChange}
+                        required
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group controlId="patientID">
+                      <Form.Label>Patient ID</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter patient ID"
+                        name="patientId"
+                        value={formData.patientId}
                         onChange={handleChange}
                         required
                       />
@@ -105,10 +144,9 @@ const AddPatient = () => {
                     <option value="Other">Other</option>
                   </Form.Control>
                 </Form.Group>
-                <div className="text-center">
-                  <Button variant="primary" type="submit" style={{ backgroundColor: '#e8232a', marginLeft: '10px' }}>
-                    
-                    Add Patient
+                <div className="text-right">
+                  <Button variant="primary" type="submit" style={{ backgroundColor: '#e8232a', marginLeft: '10px', width:'100px' }}>
+                    Add
                   </Button>
                 </div>
               </Form>

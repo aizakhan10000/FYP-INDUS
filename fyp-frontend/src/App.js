@@ -4,25 +4,25 @@ import {
   Routes,
   Route
 } from 'react-router-dom';
-import LoginPage from './LoginPage'; // Adjust the import path as necessary
-import Dashboard from './Dashboard';
-import Patients from './Patients';
-import PatientDetails from './PatientDetail';
-import GenerateReport from './GenerateReport';
-import PatientHistory from './PatientHistory';
-import CreatePatient from './CreatePatient';
-import Homepage from './Homepage';
-import UploadImages from './BulkUpload';
+import LoginPage from './Screens/LoginPage'; // Adjust the import path as necessary
+import Dashboard from './Screens/Dashboard';
+import Patients from './Screens/Patients';
+import PatientDetails from './Screens/PatientDetail';
+import GenerateReport from './Screens/GenerateReport';
+import PatientHistory from './Screens/PatientHistory';
+import CreatePatient from './Screens/CreatePatient';
+// import Homepage from './Screens/Homepage';
+import UploadImages from './Screens/BulkUpload';
 import Setting from './Setting';
-import Result from './Results';
-import AddPatient from './AddPatient';
+import Result from './Screens/Results';
+import AddPatient from './Screens/AddPatient';
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/login" element={<LoginPage />} />
+          {/* <Route path="/" element={<Homepage />} /> */}
+          <Route path="/" element={<LoginPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/patients" element={<Patients />} />
           {/* <Route path="/patient-detail" element={<PatientDetails />} /> */}

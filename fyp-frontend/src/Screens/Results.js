@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css-files/Dashboard.css'; // Ensure the path matches your CSS file for consistent styling
-import Sidebar from './Screens/Sidebar'; // Adjust the import path as necessary
+import '../css-files/Dashboard.css'; // Ensure the path matches your CSS file for consistent styling
+import Sidebar from './Sidebar'; // Adjust the import path as necessary
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -112,7 +112,7 @@ const Result = () => {
                           <Card.Text>
                             <strong>Right Analysis:</strong> {result.rightAnalysis.sign}, {result.rightAnalysis.accuracy}
                           </Card.Text> */}
-                          <Card className={`text-center bg-${resultColor(result)} text-white`}>
+                          <Card className={`text-center bg-${resultColor(result.result)} text-white mt-3`}>
                             <Card.Body>{result.result.prediction === 'Pneumonia' ? 'Pneumonia' : 'Normal'}</Card.Body>
                           </Card>
                         </Card.Body>

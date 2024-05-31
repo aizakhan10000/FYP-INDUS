@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Card, Button, Form, Image, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css-files/Dashboard.css'; // Adjust the path as necessary
-import Sidebar from './Screens/Sidebar'; // Adjust as necessary
+import '../css-files/Dashboard.css'; // Adjust the path as necessary
+import Sidebar from './Sidebar'; // Adjust as necessary
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 

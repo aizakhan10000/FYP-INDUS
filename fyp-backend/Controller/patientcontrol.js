@@ -6,7 +6,9 @@ async function createPatient(req,res) {
     try {
         const{ name, city, PatientID, gender, phoneNo, patientHistory, radiologist }=req.body;
         console.log("body",req.body);
-  
+        if(!PatientID){
+          throw new Error("Kindly add patient Id");
+        }
         const patientExists=await Patient.findOne({PatientID})
   
         if(!patientExists){
@@ -22,10 +24,10 @@ async function createPatient(req,res) {
                 },
             ]);
             console.log("Patient created")  
-            res.send("Patient created")        
+            res.send(patient)        
         }
         else{
-            res.send("invalid data")
+            res.send("Patient already exists")
         }
     }
     catch (error) {
