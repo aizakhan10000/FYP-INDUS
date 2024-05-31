@@ -1,8 +1,8 @@
 import React from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css-files/Dashboard.css'; // Ensure the path matches your CSS file for consistent styling
-import Sidebar from './Screens/Sidebar'; // Adjust the import path as necessary
+import '../css-files/Dashboard.css'; // Ensure the path matches your CSS file for consistent styling
+import Sidebar from './Sidebar'; // Adjust the import path as necessary
 import { useNavigate } from 'react-router-dom';
 
 const GenerateReport = () => {

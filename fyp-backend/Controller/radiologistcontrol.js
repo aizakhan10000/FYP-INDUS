@@ -89,20 +89,20 @@ async function login(req, res) {
             });
         }
 
-        const accessToken = AccessToken(radiologist.id);
-        const refreshToken = RefreshToken(radiologist.id);
+        // const accessToken = AccessToken(radiologist.id);
+        // const refreshToken = RefreshToken(radiologist.id);
 
-        res.cookie("access_token", accessToken, {
-            httpOnly: true,
-        })
-        .cookie("refreshToken", refreshToken, {
-            httpOnly: true,
-        });
+        // res.cookie("access_token", accessToken, {
+        //     httpOnly: true,
+        // })
+        // .cookie("refreshToken", refreshToken, {
+        //     httpOnly: true,
+        // });
 
         res.status(200).send({
             message: "Radiologist login successfully",
             data: radiologist,
-            accessToken,
+            // accessToken,
         });
     } catch (error) {
         console.error(error);
@@ -112,8 +112,31 @@ async function login(req, res) {
         });
     }
 }
+async function forgotPassword(req, res){
+    try{
+        const { password } = req.body;
+        const radiologist = await Radiologist.findOne({username: req.params.username});
+        if(!radiologist){
+            res.status(400).send("User not found");
+        }
+        radiologist.password = password;
+        await radiologist.save();
+        res.status(200).send({
+            message: "Password reset successfully",
+            data: radiologist,
+            // accessToken,
+        });
+
+    }
+    catch(err){
+        res.status(500).send({
+            message: err.message
+        });
+    }
+}
 
 module.exports = {
     signup,
     login,
+    forgotPassword
 };

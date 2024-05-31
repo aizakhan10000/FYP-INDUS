@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Card, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css-files/Dashboard.css'; // Assuming you have a similar CSS file for consistent styling
-import Sidebar from './Screens/Sidebar'; // Adjust the path as necessary
+import '../css-files/Dashboard.css'; // Assuming you have a similar CSS file for consistent styling
+import Sidebar from './Sidebar'; // Adjust the path as necessary
 import { useNavigate } from 'react-router-dom';
 
 const PatientHistory = () => {

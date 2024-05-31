@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Card, Button, Form, Image, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css-files/Dashboard.css';
-import Sidebar from './Screens/Sidebar';
+import '../css-files/Dashboard.css';
+import Sidebar from './Sidebar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
@@ -12,6 +12,7 @@ import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Patients = () => {
   let navigate = useNavigate();
+
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,20 +23,24 @@ const Patients = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [notes, setNotes] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImageUrl, setSelectedImageUrl] = useState(null);
   const [showGenerateReport, setShowGenerateReport] = useState(false);
-  const [reportResult, setReportResult] = useState('');
+  const [classificationResult, setClassificationResult] = useState(null);
+  const [showGeneratePdf, setShowGeneratePdf] = useState(false);
+  // const [reportResult, setReportResult] = useState('');
   const fileInputRef = useRef();
   const [hover, setHover] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:3000/patient/getAllPatients')
+    axios.get('http://localhost:3000/patient/getAllPatients')
+      // .then(response => {
+      //   if (!response.ok) throw new Error('Failed to fetch');
+      //   return response.json();
+      // })
       .then(response => {
-        if (!response.ok) throw new Error('Failed to fetch');
-        return response.json();
-      })
-      .then(data => {
-        setPatients(data.data.patients);
-        setFilteredPatients(data.data.patients);
+        const patients = response.data.data.patients;
+        setPatients(patients);
+        setFilteredPatients(patients);
         setIsLoading(false);
       })
       .catch(error => {
@@ -76,10 +81,12 @@ const Patients = () => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file && file.type.startsWith("image/")) {
-      setSelectedImage(URL.createObjectURL(file));
+      setSelectedImage(file); // Ensure this is a File object, not a URL
+      setSelectedImageUrl(URL.createObjectURL(file)); // URL to display the image
       setShowGenerateReport(true);
     } else {
       setSelectedImage(null);
+      setSelectedImageUrl(null);
       setShowGenerateReport(false);
     }
   };
@@ -90,15 +97,20 @@ const Patients = () => {
 
   const generateReport = async () => {
     const formData = new FormData();
+    console.log('Selected Image:', selectedImage); // Verify the file object
     formData.append('image', selectedImage);
+    console.log('FormData:', formData.get('image')); // Verify the FormData object
     try {
       const response = await axios.post('http://localhost:3000/xray/uploadXray', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      setReportResult(JSON.stringify(response.data.result.prediction, null, 2));
+      setClassificationResult(JSON.stringify(response.data.result.prediction, null, 2));
+      setShowGeneratePdf(true); // Show the "Generate PDF" button
+      console.log("REPORT RESULT: ",classificationResult )
     } catch (error) {
       console.error('Error uploading X-ray:', error);
-      setReportResult('Failed to generate report.');
+      setClassificationResult('Failed to generate report.');
+      setShowGeneratePdf(false); // Hide the "Generate PDF" button if there's an error
     }
   };
 
@@ -108,6 +120,25 @@ const Patients = () => {
   const goToAddPatient = () => {
     navigate('/patient-add');
   };
+
+  function ResultBox({ result }) {
+    const isNormal = result.includes("Normal");
+    const boxStyle = {
+      padding: '10px',
+      margin: '10px 0',
+      borderRadius: '5px',
+      color: 'white',
+      fontWeight: 'bold',
+      backgroundColor: isNormal ? 'green' : 'red'
+    };
+
+    return (
+      <div style={boxStyle}>
+        {result}
+      </div>
+    );
+  }
+
 
   return (
     <div className="container-fluid">
@@ -143,7 +174,7 @@ const Patients = () => {
                       onFocus={() => setHover(true)}
                       onBlur={() => setHover(false)}><FontAwesomeIcon icon={faCalendarAlt} /></Button>}
                       className="form-control"
-                      style={{ borderRadius: '30px', width: 'auto' }}
+                      style={{ borderRadius: '30px', width: '30px' }}
                     />
                     <Button variant="danger" onClick={goToAddPatient} style={{ backgroundColor: '#e8232a', marginLeft: '10px' }}>Add Patient</Button>
                   </Form>
@@ -192,14 +223,25 @@ const Patients = () => {
                 <Row>
                   <Col xs={12} md={6} className="mb-3">
                     <div className="image-upload-box">
-                      {selectedImage ? (
-                        <Image src={selectedImage} alt="Uploaded" rounded />
+                      {selectedImageUrl ? (
+                        <Image src={selectedImageUrl} alt="Uploaded" rounded />
                       ) : (
                         <p>No Image Uploaded</p>
                       )}
                     </div>
                     <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} accept="image/*" />
-                    {showGenerateReport && <Button onClick={generateReport} className="action-button mt-2">Generate Report</Button>}
+                    {classificationResult ? (
+                    <div>
+                      {/* <p>{classificationResult}</p> */}
+                      {classificationResult && <ResultBox result={classificationResult} />}
+                      <Button onClick={() => navigate('/generate-pdf')} className="action-button mt-2">Generate PDF</Button>
+                    </div>
+                  ) : (
+                    showGenerateReport && (
+                      <Button onClick={generateReport} className="action-button mt-2">Generate Report</Button>
+                    )
+                  )}
+                    {/* {showGenerateReport && <Button onClick={generateReport} className="action-button mt-2">Generate Report</Button>} */}
                   </Col>
                   <Col xs={12} md={6}>
                     <Card.Title>{`${selectedPatient.name}`}</Card.Title>
@@ -217,8 +259,7 @@ const Patients = () => {
           </Modal.Body>
           <Modal.Footer>
             <Button className="action-button" onClick={triggerFileInput}>Upload Xray</Button>
-            <Button className="action-button" onClick={() => navigate('/patient-history')}>View History</Button>
-            <Button className="action-button" onClick={() => console.log('Follow-up requests logic goes here.')}>Follow Up</Button>
+            <Button className="action-button" onClick={() => console.log('Follow-up requests logic goes here.')}>Create Appointment</Button>
           </Modal.Footer>
         </Modal>
       )}

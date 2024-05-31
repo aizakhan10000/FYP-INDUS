@@ -3,41 +3,33 @@ const bcrypt = require("bcrypt");
 
 const appointmentSchema = new mongoose.Schema(
   {
-    
-    phoneNo: {
-      type: String,
+    radiologist_id : {      // x ray picture
+      type: Number,
+      required: true,
+      ref : 'Radiologists'
+  },
+    patient_id: {
+      type: Number,
       require: true,
+      ref: 'Patients'
     },
-    patientname: {
-      type: String,
+    xray_id:{
+      type: Number,
       require: true,
-    },
-    gender: {
-      type: String,
-      require: true,
-    },
-    radiologistname:{
-      type:String,
-      require:true,
+      ref: 'Xrays'
     },
     date:{
         type:Date,
         require: true,
     },
-    patient: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: "patient",
-        default: [],
-      },
-    ],
-    radiologist: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: "radiologist",
-        default: [],
-      },
-    ],
+    time:{
+      type: String,
+
+    },
+    completed:{
+      type: Boolean,
+      require: true
+    }
   }
 );
 

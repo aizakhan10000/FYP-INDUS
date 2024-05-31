@@ -1,17 +1,44 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setUser } from './actions/userActions'; // Define setUser action
+import React, { useState, useEffect } from 'react';
+import { useDispatch} from 'react-redux';
+import { setUser } from '../actions/userActions'; // Define setUser action
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './LoginPage.css'; // Ensure this path is correct
-import logo from './logo.png'; // Update the path according to your project structure
+import '../css-files/LoginPage.css'; // Ensure this path is correct
+import logo from '../logo.png'; // Update the path according to your project structure
 import { useNavigate } from 'react-router-dom';
+
+const textVariations = [
+  {
+    title: 'Faith',
+    description: 'Absolute belief that all means are from the Almighty',
+  },
+  {
+    title: 'Respect',
+    description: 'Extending courtesy to all stakeholders – patients, colleagues, staff, partners, donors, suppliers.',
+  },
+  {
+    title: 'Integrity',
+    description: 'Honesty, fairness and self scrutiny in all actions to ensure safety, confidentiality and privacy.',
+  },
+  {
+    title: 'Justice & Equity',
+    description: 'Ensure fairness in all processes.',
+  }
+];
+
 
 function LoginPage() {
     const dispatch = useDispatch();
   let navigate = useNavigate();
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(''); // State to handle login errors
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex(prevIndex => (prevIndex + 1) % textVariations.length);
+    }, 3000); // Change text every 3 seconds
+    return () => clearInterval(interval); // Clean up interval on component unmount
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -39,6 +66,7 @@ function LoginPage() {
       const userData = await response.json();
       // console.log("USER DATA: ", userData);
       const Data = userData.data
+    
       console.log("USER DATA: ", Data);
 
       // Dispatch action to set user data in Redux store
@@ -53,6 +81,7 @@ function LoginPage() {
     }
   };
 
+  const { title, description } = textVariations[currentIndex];
   return (
     <div className="container-fluid h-100">
       <div className="row h-100">
@@ -60,8 +89,8 @@ function LoginPage() {
           <img src={logo} alt="Indus Hospital & Health Network Logo" className="img-fluid mb-4" />
           <h1>INDUS HOSPITAL</h1>
           <h2>HEALTH NETWORK</h2>
-          <p>Faith</p>
-          <p>Absolute belief that all means are from the Almighty</p>
+          <p className='p'>{title}</p>
+          <p className='p'>{description}</p>
         </div>
         <div className="col-md-6 d-flex flex-column justify-content-center align-items-center">
           <div className="card-login w-100 p-4">
@@ -89,7 +118,14 @@ function LoginPage() {
               </div>
               {loginError && <div className="alert alert-danger" role="alert">{loginError}</div>}
               <div className="d-flex justify-content-between align-items-center mb-4">
-                <a href="#forgot-password" className="text-decoration-none">Forgot Password?</a>
+              <a
+                  href={username ? `/forgot-password?id=${username}` : "#"}
+                  className={`text-decoration-none ${!username && "disabled-link"}`}
+                  onClick={(e) => !username && e.preventDefault()}
+                  
+                >
+                  Forgot Password?
+                </a>
               </div>
               <button type="submit" className="btn btn-primary w-100">Login</button>
             </form>

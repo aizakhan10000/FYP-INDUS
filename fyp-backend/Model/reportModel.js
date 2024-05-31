@@ -8,6 +8,11 @@ const reportModel = new mongoose.Schema({
         required: true,
         ref : 'XRay'
     },
+    patient_id : {      // x ray picture
+        type: Number,
+        // required: true,
+        ref : 'Patients'
+    },
     // pateint name , radiologist name 
     content: {
         type: String,
@@ -17,9 +22,9 @@ const reportModel = new mongoose.Schema({
         type: Date,
         default : Date.now
     }, // classification result 
-    status: {
-        type: String
-    }
+    // status: {
+    //     type: String
+    // }
 
 })
 const Report = mongoose.model('report',reportModel)

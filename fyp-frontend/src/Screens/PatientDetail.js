@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Card, Button, Form, Image, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css-files/Dashboard.css'; // Adjust the path as necessary
-import Sidebar from './Screens/Sidebar'; // Adjust as necessary
+import '../css-files/Dashboard.css'; // Adjust the path as necessary
+import Sidebar from './Sidebar'; // Adjust as necessary
 import { useNavigate, useParams } from 'react-router-dom';
+import { uploadImages } from '../actions/uploadActions';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
 const PatientDetails = () => {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
+
   let { id } = useParams();
   const [notes, setNotes] = useState('');
   const [patient, setPatient] = useState(null);
@@ -43,7 +47,7 @@ const PatientDetails = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    if (file && file.type.startsWith("image/")) {
+    if (file && file.type.startsWith("images/")) {
       setSelectedImage(URL.createObjectURL(file));
       setShowGenerateReport(true);
     } else {
@@ -57,17 +61,21 @@ const PatientDetails = () => {
   };
 
   const generateReport = async () => {
-    const formData = new FormData();
-    formData.append('image', selectedImage);
-    try {
-      const response = await axios.post('http://localhost:3000/xray/uploadXray', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
-      setReportResult(JSON.stringify(response.data.result.prediction, null, 2));
-    } catch (error) {
-      console.error('Error uploading X-ray:', error);
-      setReportResult('Failed to generate report.');
-    }
+    dispatch(uploadImages(selectedImage));
+    setSelectedImage({});
+    navigate("/result");
+    // const formData = new FormData();
+    // formData.append('image', selectedImage);
+    // try {
+    //   const response = await axios.post('http://localhost:3000/xray/uploadXray', formData, {
+    //     headers: { 'Content-Type': 'multipart/form-data' }
+    //   });
+    //   setReportResult(JSON.stringify(response.data.result.prediction, null, 2));
+    //   navigate("/result")
+    // } catch (error) {
+    //   console.error('Error uploading X-ray:', error);
+    //   setReportResult('Failed to generate report.');
+    // }
   };
 
   const viewPatientHistory = () => {
@@ -100,7 +108,7 @@ const PatientDetails = () => {
                       <p>No Image Uploaded</p>
                     )}
                   </div>
-                  <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} accept="image/*" />
+                  <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} accept="images/*" />
                   {showGenerateReport && <Button onClick={generateReport} className="action-button mt-2">Generate Report</Button>}
                 </Col>
                 <Col xs={12} md={6}>
@@ -121,7 +129,6 @@ const PatientDetails = () => {
         </Container>
       </Modal.Body>
       <Modal.Footer>
-        <Button className="action-button" onClick={viewPatientHistory}>View History</Button>
         <Button className="action-button" onClick={triggerFileInput}>Upload Xray</Button>
         <Button className="action-button" onClick={followUpRequests}>Follow Up</Button>
       </Modal.Footer>

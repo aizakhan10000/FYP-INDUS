@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { uploadImages } from './actions/uploadActions';
-import Sidebar from './Screens/Sidebar';
-import './css-files/Dashboard.css';
+import { uploadImages } from '../actions/uploadActions';
+import Sidebar from './Sidebar';
+import '../css-files/Dashboard.css';
 
 function UploadImages() {
   const navigate = useNavigate();
