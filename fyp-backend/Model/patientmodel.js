@@ -6,15 +6,25 @@ const patientSchema = new mongoose.Schema(
     name: {
       type: String,
       require: true,
+      unique: true,
     },
+    PatientID:{
+      type:String,
+      require: true,
+    },
+    /*cnic:{
+      type: String,
+      require:true,
+      unique:true,
+    },
+    address:{
+      type:String,
+      require:true,
+      
+    },*/
     city: {
       type: String,
       require: true,
-    },
-    PatientID: {
-      type: String,
-      require: true,
-      unique: true,
     },
     phoneNo: {
       type: String,
@@ -27,10 +37,10 @@ const patientSchema = new mongoose.Schema(
     gender: {
       type: String,
       require: true,
-    },
+    }, 
     radiologist: [
       {
-        type: Number,
+        type: mongoose.Schema.ObjectId,
         ref: "radiologist",
         // default: [],
       },
