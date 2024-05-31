@@ -8,13 +8,13 @@ async function createPatient(req, res) {
       console.log("body", req.body);
 
       // Validation checks
-      if (!name || !/^[A-Za-z]+$/.test(name)) {
-          return res.status(400).send("Name should only contain alphabetic characters and is a required field");
-      }
+      // if (!name || !/^[A-Za-z]+$/.test(name)) {
+      //     return res.status(400).send("Name should only contain alphabetic characters and is a required field");
+      // }
 
-      if (!city || !/^[A-Za-z]+$/.test(city)) {
-          return res.status(400).send("City should only contain alphabetic characters and is a required field");
-      }
+      // if (!city || !/^[A-Za-z]+$/.test(city)) {
+      //     return res.status(400).send("City should only contain alphabetic characters and is a required field");
+      // }
 
       if (!PatientID || !/^\d+$/.test(PatientID)) {
           return res.status(400).send("Patient ID should be a string containing numbers only and is a required field");

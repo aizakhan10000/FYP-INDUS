@@ -259,8 +259,7 @@ const Patients = () => {
           </Modal.Body>
           <Modal.Footer>
             <Button className="action-button" onClick={triggerFileInput}>Upload Xray</Button>
-            <Button className="action-button" onClick={() => navigate('/patient-history')}>View History</Button>
-            <Button className="action-button" onClick={() => console.log('Follow-up requests logic goes here.')}>Follow Up</Button>
+            <Button className="action-button" onClick={() => console.log('Follow-up requests logic goes here.')}>Create Appointment</Button>
           </Modal.Footer>
         </Modal>
       )}
