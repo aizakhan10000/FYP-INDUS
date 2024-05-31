@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 router.post('/signup', radiologistController.signup);
-router.post('/login', verifyToken, radiologistController.login);
+router.post('/login', radiologistController.login);
 //router.post('/reset-password', radiologistController.resetPassword);
 //router.post('/forgot-password', radiologistController.forgetPassword);
 

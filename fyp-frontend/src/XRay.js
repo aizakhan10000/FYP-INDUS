@@ -1,58 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
-import axios from 'axios';
-import './css-files/Dashboard.css'; // Adjust the path as needed
+import './css-files/Dashboard.css'; // Ensure the path is correctly set
 
 const XRay = () => {
   const [xrays, setXrays] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
   useEffect(() => {
-    // Function to fetch X-rays from the API using GET method
-    
     const fetchXrays = async () => {
-        console.log("FETCHing xrays")
-        try {
-          const response = await fetch('localhost:3000/xray/xrays', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-          if (!response.ok) {
-            throw new Error(`Errorrrrrr.HTTP error! status: ${response.status}`);
-          }
-          // Try to parse the response as JSON
-          try {
-            const data = await response.json();
-            setXrays(data.xrays);
-            setLoading(false);
-          } catch (error) {
-            throw new Error('Response not in JSON format');
-          }
-        } catch (err) {
-          console.error("Failed to fetch X-rays:", err);
-          setError("Failed to fetch X-rays");
-          setLoading(false);
+      try {
+        const response = await fetch('http://localhost:3000/xray/xrays', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-      };
+        const data = await response.json();
+        setXrays(data.xrays);
+      } catch (err) {
+        console.error("Failed to fetch X-rays:", err);
+        setError("Failed to fetch X-rays");
+      } finally {
+        setLoading(false);
+      }
+    };
 
     fetchXrays();
   }, []);
 
   if (loading) {
     return (
-      <div className="text-center">
+      <Container className="text-center my-4">
         <Spinner animation="border" variant="primary" />
         <p>Loading X-rays...</p>
-      </div>
+      </Container>
     );
   }
 
   if (error) {
-    return <div className="text-center"><p>{error}</p></div>;
+    return <Container className="text-center my-4"><p>{error}</p></Container>;
   }
 
   return (
