@@ -7,6 +7,7 @@ const path = require('path');
 const axios = require("axios")
 require('dotenv').config()
 const { BlobServiceClient } = require('@azure/storage-blob');
+const Patient = require('../Model/patientmodel');
 
 const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
 const containerName = 'cloudimages'; // The name of your container created in Azure
@@ -38,6 +39,7 @@ async function uploadXray(req, res) {
 
         const xray = new XRay({
             _id: new mongoose.Types.ObjectId(),
+            patient_id: req.params.id,
             image: imageUrl, // Store the URL instead of the local path
         });
 
@@ -48,6 +50,10 @@ async function uploadXray(req, res) {
         const response = await axios.post(`${process.env.Flask_URL}/predict`, {
                 image_url: imageUrl
             });
+
+        const patient = await Patient.findById(xray.patient_id);
+        patient.status = response.data.prediction;
+        await patient.save();
      
         res.status(200).json({
             message: "XRay is uploaded successfully!",
@@ -85,6 +91,7 @@ async function uploadMultipleXrays(req, res) {
 
         const xray = new XRay({
             _id: new mongoose.Types.ObjectId(),
+            patientId: req.body.id,
             image: imageUrl
         });
         await xray.save();

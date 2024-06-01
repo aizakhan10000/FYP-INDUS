@@ -11,7 +11,7 @@ import PatientDetails from './Screens/PatientDetail';
 import GenerateReport from './Screens/GenerateReport';
 import PatientHistory from './Screens/PatientHistory';
 import CreatePatient from './Screens/CreatePatient';
-// import Homepage from './Screens/Homepage';
+import AddAppointment from './Screens/AddAppointment';
 import UploadImages from './Screens/BulkUpload';
 import Setting from './Setting';
 import Result from './Screens/Results';
@@ -35,6 +35,7 @@ function App() {
           <Route path="/patient-history" element={<PatientHistory />} />
           <Route path="/report" element={<GenerateReport />} />
           <Route path="/create-patient" element={<CreatePatient />} />
+          <Route path="/create-appointment" element={<AddAppointment />} />
           <Route path="/upload" element={<UploadImages />} />
           <Route path="/setting" element={<Setting />} />
           <Route path="/result" element={<Result />} />

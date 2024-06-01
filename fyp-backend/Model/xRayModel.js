@@ -10,13 +10,14 @@ const xRaySchema= new mongoose.Schema({
         required: true,
     },
     patient_id : {      // x ray picture
-        type: Number,
+        type: mongoose.Types.ObjectId,
         required: true,
         ref : 'Patients'
     },
     status:{
         type: String,
-        required: true
+        default: "Not uploaded"
+        // required: true
     },
     date: {
         type: Date,

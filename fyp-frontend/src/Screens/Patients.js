@@ -10,7 +10,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { Document, Page, Text, View, Image as PDFImage, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
-import Logo from '../logo.png';
+import logo from '../logo.png'; // Adjust the path to your logo file
+import QRCode from 'qrcode';
 
 const Patients = () => {
   let navigate = useNavigate();
@@ -29,6 +30,7 @@ const Patients = () => {
   const [showGenerateReport, setShowGenerateReport] = useState(false);
   const [classificationResult, setClassificationResult] = useState(null);
   const [showGeneratePdf, setShowGeneratePdf] = useState(false);
+  const [qrCodeUrl, setQrCodeUrl] = useState(null);
   const fileInputRef = useRef();
   const [hover, setHover] = useState(false);
 
@@ -55,6 +57,18 @@ const Patients = () => {
     });
     setFilteredPatients(results);
   }, [searchTerm, selectedDate, patients]);
+
+  useEffect(() => {
+    if (selectedPatient) {
+      QRCode.toDataURL(selectedPatient._id, { width: 100 }, (err, url) => {
+        if (err) {
+          console.error('Error generating QR code:', err);
+        } else {
+          setQrCodeUrl(url);
+        }
+      });
+    }
+  }, [selectedPatient]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -146,6 +160,19 @@ const Patients = () => {
     image: {
       marginVertical: 15,
       marginHorizontal: 100,
+    },
+    qrCode: {
+      marginVertical: 15,
+      width: 100,
+      height: 100,
+    },
+    detailsContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    column: {
+      flex: 1,
     }
   });
   
@@ -154,15 +181,22 @@ const Patients = () => {
       <Page size="A4" style={styles.page}>
         <View style={styles.section}>
           <View style={styles.titleContainer}>
-            <PDFImage src={Logo} style={styles.logo} />
+            <PDFImage src={logo} style={styles.logo} />
             <Text style={styles.title}>Indus Hospital & Health Network</Text>
           </View>
           <Text style={styles.heading}>Patient Details</Text>
-          <Text style={styles.text}>Name: {selectedPatient.name}</Text>
-          <Text style={styles.text}>Gender: {selectedPatient.gender}</Text>
-          <Text style={styles.text}>City: {selectedPatient.city}</Text>
-          <Text style={styles.text}>Phone: {selectedPatient.phoneNo}</Text>
-          <Text style={styles.text}>Notes: {notes}</Text>
+          <View style={styles.detailsContainer}>
+            <View style={styles.column}>
+              <Text style={styles.text}>Name: {selectedPatient.name}</Text>
+              <Text style={styles.text}>Gender: {selectedPatient.gender}</Text>
+              <Text style={styles.text}>City: {selectedPatient.city}</Text>
+              <Text style={styles.text}>Phone: {selectedPatient.phoneNo}</Text>
+              <Text style={styles.text}>Notes: {notes}</Text>
+            </View>
+            <View style={styles.column}>
+              <PDFImage src={qrCodeUrl} style={styles.qrCode} />
+            </View>
+          </View>
           <PDFImage src={selectedImageUrl} style={styles.image} />
           <Text style={styles.text}>Classification Result: {classificationResult}</Text>
         </View>
