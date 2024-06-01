@@ -9,6 +9,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { Document, Page, Text, View, Image as PDFImage, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
+import Logo from '../logo.png';
 
 const Patients = () => {
   let navigate = useNavigate();
@@ -27,16 +29,11 @@ const Patients = () => {
   const [showGenerateReport, setShowGenerateReport] = useState(false);
   const [classificationResult, setClassificationResult] = useState(null);
   const [showGeneratePdf, setShowGeneratePdf] = useState(false);
-  // const [reportResult, setReportResult] = useState('');
   const fileInputRef = useRef();
   const [hover, setHover] = useState(false);
 
   useEffect(() => {
     axios.get('http://localhost:3000/patient/getAllPatients')
-      // .then(response => {
-      //   if (!response.ok) throw new Error('Failed to fetch');
-      //   return response.json();
-      // })
       .then(response => {
         const patients = response.data.data.patients;
         setPatients(patients);
@@ -81,8 +78,8 @@ const Patients = () => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file && file.type.startsWith("image/")) {
-      setSelectedImage(file); // Ensure this is a File object, not a URL
-      setSelectedImageUrl(URL.createObjectURL(file)); // URL to display the image
+      setSelectedImage(file);
+      setSelectedImageUrl(URL.createObjectURL(file));
       setShowGenerateReport(true);
     } else {
       setSelectedImage(null);
@@ -105,14 +102,73 @@ const Patients = () => {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setClassificationResult(JSON.stringify(response.data.result.prediction, null, 2));
-      setShowGeneratePdf(true); // Show the "Generate PDF" button
-      console.log("REPORT RESULT: ",classificationResult )
+      setShowGeneratePdf(true);
+      console.log("REPORT RESULT: ", classificationResult);
     } catch (error) {
       console.error('Error uploading X-ray:', error);
       setClassificationResult('Failed to generate report.');
-      setShowGeneratePdf(false); // Hide the "Generate PDF" button if there's an error
+      setShowGeneratePdf(false);
     }
   };
+
+  const styles = StyleSheet.create({
+    page: {
+      padding: 30,
+    },
+    section: {
+      margin: 10,
+      padding: 10,
+      flexGrow: 1,
+    },
+    titleContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 20,
+    },
+    title: {
+      fontSize: 24,
+      textAlign: 'center',
+      flexGrow: 1,
+    },
+    logo: {
+      width: 50,
+      height: 50,
+    },
+    heading: {
+      fontSize: 18,
+      marginBottom: 10,
+    },
+    text: {
+      marginBottom: 10,
+      fontSize: 12,
+    },
+    image: {
+      marginVertical: 15,
+      marginHorizontal: 100,
+    }
+  });
+  
+  const MyDocument = () => (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <View style={styles.section}>
+          <View style={styles.titleContainer}>
+            <PDFImage src={Logo} style={styles.logo} />
+            <Text style={styles.title}>Indus Hospital & Health Network</Text>
+          </View>
+          <Text style={styles.heading}>Patient Details</Text>
+          <Text style={styles.text}>Name: {selectedPatient.name}</Text>
+          <Text style={styles.text}>Gender: {selectedPatient.gender}</Text>
+          <Text style={styles.text}>City: {selectedPatient.city}</Text>
+          <Text style={styles.text}>Phone: {selectedPatient.phoneNo}</Text>
+          <Text style={styles.text}>Notes: {notes}</Text>
+          <PDFImage src={selectedImageUrl} style={styles.image} />
+          <Text style={styles.text}>Classification Result: {classificationResult}</Text>
+        </View>
+      </Page>
+    </Document>
+  );
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -138,7 +194,6 @@ const Patients = () => {
       </div>
     );
   }
-
 
   return (
     <div className="container-fluid">
@@ -167,12 +222,12 @@ const Patients = () => {
                     <DatePicker
                       selected={selectedDate}
                       onChange={handleDateChange}
-                      customInput={<Button style={{ borderRadius: '0 30px 30px 0' , backgroundColor: hover ? '#cc1f25' : '#e8232a',
-                      borderColor: hover ? '#cc1f25' : '#e8232a',
-                      color: 'white'}} onMouseEnter={() => setHover(true)}
-                      onMouseLeave={() => setHover(false)}
-                      onFocus={() => setHover(true)}
-                      onBlur={() => setHover(false)}><FontAwesomeIcon icon={faCalendarAlt} /></Button>}
+                      customInput={<Button style={{ borderRadius: '0 30px 30px 0', backgroundColor: hover ? '#cc1f25' : '#e8232a',
+                        borderColor: hover ? '#cc1f25' : '#e8232a',
+                        color: 'white'}} onMouseEnter={() => setHover(true)}
+                        onMouseLeave={() => setHover(false)}
+                        onFocus={() => setHover(true)}
+                        onBlur={() => setHover(false)}><FontAwesomeIcon icon={faCalendarAlt} /></Button>}
                       className="form-control"
                       style={{ borderRadius: '30px', width: '30px' }}
                     />
@@ -219,7 +274,7 @@ const Patients = () => {
           </Modal.Header>
           <Modal.Body>
             <Container>
-              <>
+              <div id="pdf-content">
                 <Row>
                   <Col xs={12} md={6} className="mb-3">
                     <div className="image-upload-box">
@@ -231,17 +286,17 @@ const Patients = () => {
                     </div>
                     <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} accept="image/*" />
                     {classificationResult ? (
-                    <div>
-                      {/* <p>{classificationResult}</p> */}
-                      {classificationResult && <ResultBox result={classificationResult} />}
-                      <Button onClick={() => navigate('/generate-pdf')} className="action-button mt-2">Generate PDF</Button>
-                    </div>
-                  ) : (
-                    showGenerateReport && (
-                      <Button onClick={generateReport} className="action-button mt-2">Generate Report</Button>
-                    )
-                  )}
-                    {/* {showGenerateReport && <Button onClick={generateReport} className="action-button mt-2">Generate Report</Button>} */}
+                      <div>
+                        {classificationResult && <ResultBox result={classificationResult} />}
+                        <PDFDownloadLink document={<MyDocument />} fileName="report.pdf">
+                          {({ blob, url, loading, error }) => (loading ? 'Loading document...' : <Button className="action-button mt-2">Generate PDF</Button>)}
+                        </PDFDownloadLink>
+                      </div>
+                    ) : (
+                      showGenerateReport && (
+                        <Button onClick={generateReport} className="action-button mt-2">Generate Report</Button>
+                      )
+                    )}
                   </Col>
                   <Col xs={12} md={6}>
                     <Card.Title>{`${selectedPatient.name}`}</Card.Title>
@@ -254,7 +309,7 @@ const Patients = () => {
                     </Form.Group>
                   </Col>
                 </Row>
-              </>
+              </div>
             </Container>
           </Modal.Body>
           <Modal.Footer>

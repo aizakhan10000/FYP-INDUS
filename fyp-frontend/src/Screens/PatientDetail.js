@@ -78,10 +78,6 @@ const PatientDetails = () => {
     // }
   };
 
-  const viewPatientHistory = () => {
-    navigate('/patient-history');
-  };
-
   const followUpRequests = () => {
     console.log('Follow-up requests logic goes here.');
   };
