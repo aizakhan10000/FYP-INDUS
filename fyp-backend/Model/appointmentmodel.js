@@ -1,42 +1,36 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const appointmentSchema = new mongoose.Schema(
   {
-    radiologist_id : {      // x ray picture
+    radiologist_id: {
       type: mongoose.Types.ObjectId,
       required: true,
-      ref : 'Radiologists'
-  },
+      ref: 'Radiologists'
+    },
     patient_id: {
       type: mongoose.Types.ObjectId,
-      require: true,
+      required: true,
       ref: 'Patients'
     },
-    xray_id:{
+    xray_id: {
       type: mongoose.Types.ObjectId,
-      require: true,
+      required: true,
       ref: 'Xrays'
     },
-    date:{
-        type:Date,
-        require: true,
+    date: {
+      type: Date,
+      required: true,
     },
-    time:{
+    time: {
       type: String,
-
     },
-    completed:{
+    completed: {
       type: Boolean,
-      // require: true
+      default: false,
     }
   }
 );
 
-/*patientSchema.pre("save", function (next) {
-  this.password = bcrypt.hashSync(this.password, 10);
-  next();
-});
-*/
-const Appointment = mongoose.model("appointment", appointmentSchema);
+const Appointment = mongoose.model('Appointment', appointmentSchema);
 
 module.exports = Appointment;

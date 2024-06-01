@@ -96,7 +96,9 @@ const [showAppointmentModal, setShowAppointmentModal] = useState(false);
     
     const radiologistId = sessionStorage.getItem("radiologistId"); // Replace with the actual radiologist ID
     console.log("Radiologist IDDD" +radiologistId);
-    const xrayId = "65f8731107c2763f5c320c26"; // Replace with the actual xray ID
+    console.log("Patient id " + selectedPatient._id);
+    const xrayId = "65f88164a3046094720ec18e"; // Replace with the actual xray ID
+    
   
     const appointmentData = {
       patient_id: patientId,
