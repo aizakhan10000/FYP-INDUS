@@ -33,7 +33,7 @@ function Sidebar() {
           </Link>
         </li>
         <li className="option mb-2">
-          <Link to="/settings" className="nav-link">
+          <Link to="/appointment" className="nav-link">
             <FontAwesomeIcon icon={faCog} className="icon-spacing" /> SETTINGS
           </Link>
         </li>

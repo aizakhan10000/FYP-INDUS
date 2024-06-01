@@ -145,7 +145,7 @@ const ViewAllAppointments = () => {
                             <td>{date}</td>
                             <td>{appointment.completed ? 'Yes' : 'No'}</td>
                             <td>
-                              <Button variant="primary" onClick={() => handleOptionClick(appointment)}>
+                              <Button variant="primary" onClick={() => handleOptionClick(appointment)} style={{ backgroundColor: '#e8232a' }}>
                                 Option
                               </Button>
                             </td>
