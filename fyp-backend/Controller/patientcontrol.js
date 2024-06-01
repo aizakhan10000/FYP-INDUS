@@ -89,10 +89,39 @@ async function createPatient(req, res) {
           throw error;
         }
       }
+
+      async function getTotalPatientsCount(req, res) {
+        try {
+          const count = await Patient.countDocuments();
+          res.send({
+            ok: true,
+            message: "successfully fetched total patients count",
+            data: { count },
+          });
+        } catch (error) {
+          console.log(error);
+          res.status(500).send("Error fetching total patients count");
+        }
+      }
       
-    module.exports = {
-      createPatient,
-      getAllPatients,
-      getPatientById
-    };
-    
+      async function getLastFivePatients(req, res) {
+        try {
+          const patients = await Patient.find({}).sort({ _id: -1 }).limit(5);
+          res.send({
+            ok: true,
+            message: "successfully fetched last 5 patients",
+            data: { patients },
+          });
+        } catch (error) {
+          console.log(error);
+          res.status(500).send("Error fetching last 5 patients");
+        }
+      }
+      
+      module.exports = {
+        createPatient,
+        getAllPatients,
+        getPatientById,
+        getTotalPatientsCount,
+        getLastFivePatients
+      };

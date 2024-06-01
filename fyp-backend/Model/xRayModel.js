@@ -11,7 +11,7 @@ const xRaySchema= new mongoose.Schema({
     },
     patient_id : {      // x ray picture
         type: mongoose.Types.ObjectId,
-        required: true,
+        // required: true,
         ref : 'Patients'
     },
     status:{

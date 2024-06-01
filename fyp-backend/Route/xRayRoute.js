@@ -21,8 +21,9 @@ uploadMultipleXrays,
 viewXray,
 deleteXray,
 countAttendedXrays,
-getAllXrays
-
+getAllXrays,
+countXrayResults,
+countTotalXrays
 }= require("../Controller/xRayController");
 
 router.post("/uploadXRay/:id",upload.single('image'),uploadXray)
@@ -36,5 +37,6 @@ router.delete("/deleteXRay",deleteXray)
 // router.post("/uploadXRay/:id",upload.single('image'), uploadXray)
 // router.get("/viewXray/:id", verifyAccessToken, viewXray)
 // router.delete("/deleteXRay",verifyAccessToken, deleteXray)
-
+router.get('/countXrayResults', countXrayResults);
+router.get('/countTotalXrays', countTotalXrays);
 module.exports = router

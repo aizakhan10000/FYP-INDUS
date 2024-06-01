@@ -5,4 +5,6 @@ const appointmentController = require('../Controller/appointmentcontrol');
 
 router.post('/createAppointment/:patientId/:radiologistId/:xrayId', appointmentController.createAppointment);
 router.get('/getAllAppointments', appointmentController.getAllAppointments);
+router.get('/getTotalAppointmentsCount', appointmentController.getTotalAppointmentsCount);
+
 module.exports = router;

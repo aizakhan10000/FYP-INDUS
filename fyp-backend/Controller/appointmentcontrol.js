@@ -88,10 +88,24 @@ async function createAppointment(req, res) {
           throw error;
         }
       }
+
+      async function getTotalAppointmentsCount(req, res) {
+        try {
+          const count = await Appointment.countDocuments();
+          res.status(200).json({
+            message: "Total number of appointments retrieved successfully",
+            count: count
+          });
+        } catch (error) {
+          res.status(500).json({
+            error: error.message,
+            count: 0
+          });
+        }
+      }
       
-    module.exports = {
-     
-      createAppointment,
-      getAllAppointments,
-    };
-    
+      module.exports = {
+        createAppointment,
+        getAllAppointments,
+        getTotalAppointmentsCount,
+      };

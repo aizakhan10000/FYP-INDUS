@@ -227,11 +227,47 @@ async function getAllXrays(req, res) {
     }
 }
 
-module.exports={
+async function countXrayResults(req, res) {
+    try {
+      const pneumoniaCount = await XRay.countDocuments({ prediction: 'Pneumonia' });
+      const normalCount = await XRay.countDocuments({ prediction: 'Normal' });
+  
+      res.status(200).json({
+        message: "Count of X-Ray results retrieved successfully",
+        pneumoniaCount: pneumoniaCount,
+        normalCount: normalCount
+      });
+    } catch (error) {
+      res.status(500).json({
+        error: error.message,
+        pneumoniaCount: 0,
+        normalCount: 0
+      });
+    }
+  }
+  
+  async function countTotalXrays(req, res) {
+    try {
+      const count = await XRay.countDocuments();
+      res.status(200).json({
+        message: "Total number of X-rays retrieved successfully",
+        count: count
+      });
+    } catch (error) {
+      res.status(500).json({
+        error: error.message,
+        count: 0
+      });
+    }
+  }
+  
+  module.exports = {
     uploadXray,
     uploadMultipleXrays,
     viewXray,
     deleteXray,
     countAttendedXrays,
-    getAllXrays
-}
+    getAllXrays,
+    countXrayResults,
+    countTotalXrays // Add this line
+  };

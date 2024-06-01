@@ -10,6 +10,7 @@ router.post('/createPatient', patientController.createPatient);
 // router.get('/getAllPatients', verifyAccessToken, patientController.getAllPatients);
 router.get('/getAllPatients',patientController.getAllPatients);
 router.get('/getPatientById/:id', patientController.getPatientById);
-
+router.get('/getTotalPatientsCount', patientController.getTotalPatientsCount);
+router.get('/getLastFivePatients', patientController.getLastFivePatients);
 
 module.exports = router;

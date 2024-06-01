@@ -67,10 +67,14 @@ function LoginPage() {
       // console.log("USER DATA: ", userData);
       const Data = userData.data
     
-      console.log("USER DATA: ", Data);
+      
 
       // Dispatch action to set user data in Redux store
       dispatch(setUser(Data));
+
+      sessionStorage.setItem('radiologistId', Data._id);
+
+      console.log("USER DATA: ", sessionStorage.getItem("radiologistId"));
 
       console.log('Login successful', userData);
       // Navigate to dashboard or other intended route upon successful login

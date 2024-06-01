@@ -13,6 +13,7 @@ import { Document, Page, Text, View, Image as PDFImage, StyleSheet, PDFDownloadL
 import logo from '../logo.png'; // Adjust the path to your logo file
 import QRCode from 'qrcode';
 
+
 const Patients = () => {
   let navigate = useNavigate();
 
@@ -33,6 +34,12 @@ const Patients = () => {
   const [qrCodeUrl, setQrCodeUrl] = useState(null);
   const fileInputRef = useRef();
   const [hover, setHover] = useState(false);
+  const [appointmentDate, setAppointmentDate] = useState(null);
+const [appointmentTime, setAppointmentTime] = useState(null);
+const [showAppointmentModal, setShowAppointmentModal] = useState(false);
+
+
+
 
   useEffect(() => {
     axios.get('http://localhost:3000/patient/getAllPatients')
@@ -73,6 +80,52 @@ const Patients = () => {
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
+
+  const handleCreateAppointment = () => {
+    setShowAppointmentModal(true);
+  };
+  
+  const handleSaveAppointment = async () => {
+    if (!appointmentDate || !appointmentTime) {
+      alert("Please select both date and time for the appointment.");
+      return;
+    }
+  
+    const formattedDate = appointmentDate.toISOString().split('T')[0]; // Format date as 'YYYY-MM-DD'
+    const patientId = selectedPatient._id;
+    
+    const radiologistId = sessionStorage.getItem("radiologistId"); // Replace with the actual radiologist ID
+    console.log("Radiologist IDDD" +radiologistId);
+    const xrayId = "65f8731107c2763f5c320c26"; // Replace with the actual xray ID
+  
+    const appointmentData = {
+      patient_id: patientId,
+      radiologist_id: radiologistId,
+      xray_id: xrayId,
+      date: formattedDate,
+      time: appointmentTime,
+      completed: false
+    };
+  
+    try {
+      const response = await axios.post(`http://localhost:3000/appointment/createAppointment/${patientId}/${radiologistId}/${xrayId}`, appointmentData);
+      if (response.status === 200) {
+        alert("Appointment created successfully!");
+        setShowAppointmentModal(false);
+      } else {
+        alert("Failed to create appointment. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error creating appointment:", error);
+      alert("Error creating appointment. Please try again.");
+    }
+  };
+  
+  
+  const handleCloseAppointmentModal = () => {
+    setShowAppointmentModal(false);
+  };
+  
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -115,15 +168,24 @@ const Patients = () => {
       const response = await axios.post('http://localhost:3000/xray/uploadXray', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      setClassificationResult(JSON.stringify(response.data.result.prediction, null, 2));
-      setShowGeneratePdf(true);
-      console.log("REPORT RESULT: ", classificationResult);
+  
+      if (response.status === 200) {
+        const { prediction, xray } = response.data.result; // Assuming the response contains xrayId
+        setClassificationResult(JSON.stringify(prediction, null, 2));
+        sessionStorage.setItem('xrayId', xray._id); // Store xrayId in session storage
+        console.log("Xray id for this is" +xray._id);
+        setShowGeneratePdf(true);
+        console.log("REPORT RESULT: ", classificationResult);
+      } else {
+        throw new Error('Failed to upload X-ray');
+      }
     } catch (error) {
       console.error('Error uploading X-ray:', error);
       setClassificationResult('Failed to generate report.');
       setShowGeneratePdf(false);
     }
   };
+  
 
   const styles = StyleSheet.create({
     page: {
@@ -300,58 +362,92 @@ const Patients = () => {
         </div>
       </div>
       {selectedPatient && (
-        <Modal show={modalShow} onHide={handleClose} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
-          <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">
-              Patient Details
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Container>
-              <div id="pdf-content">
-                <Row>
-                  <Col xs={12} md={6} className="mb-3">
-                    <div className="image-upload-box">
-                      {selectedImageUrl ? (
-                        <Image src={selectedImageUrl} alt="Uploaded" rounded />
-                      ) : (
-                        <p>No Image Uploaded</p>
-                      )}
-                    </div>
-                    <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} accept="image/*" />
-                    {classificationResult ? (
-                      <div>
-                        {classificationResult && <ResultBox result={classificationResult} />}
-                        <PDFDownloadLink document={<MyDocument />} fileName="report.pdf">
-                          {({ blob, url, loading, error }) => (loading ? 'Loading document...' : <Button className="action-button mt-2">Generate PDF</Button>)}
-                        </PDFDownloadLink>
-                      </div>
-                    ) : (
-                      showGenerateReport && (
-                        <Button onClick={generateReport} className="action-button mt-2">Generate Report</Button>
-                      )
-                    )}
-                  </Col>
-                  <Col xs={12} md={6}>
-                    <Card.Title>{`${selectedPatient.name}`}</Card.Title>
-                    <Card.Text>{`Gender: ${selectedPatient.gender}`}</Card.Text>
-                    <Card.Text>{`City: ${selectedPatient.city}`}</Card.Text>
-                    <Card.Text>{`Phone: ${selectedPatient.phoneNo}`}</Card.Text>
-                    <Form.Group className="mt-3">
-                      <Form.Label>Notes</Form.Label>
-                      <Form.Control as="textarea" rows={3} value={notes} onChange={handleNotesChange} />
-                    </Form.Group>
-                  </Col>
-                </Row>
+  <Modal show={modalShow} onHide={handleClose} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+    <Modal.Header closeButton>
+      <Modal.Title id="contained-modal-title-vcenter">
+        Patient Details
+      </Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+      <Container>
+        <div id="pdf-content">
+          <Row>
+            <Col xs={12} md={6} className="mb-3">
+              <div className="image-upload-box">
+                {selectedImageUrl ? (
+                  <Image src={selectedImageUrl} alt="Uploaded" rounded />
+                ) : (
+                  <p>No Image Uploaded</p>
+                )}
               </div>
-            </Container>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button className="action-button" onClick={triggerFileInput}>Upload Xray</Button>
-            <Button className="action-button" onClick={() => console.log('Follow-up requests logic goes here.')}>Create Appointment</Button>
-          </Modal.Footer>
-        </Modal>
-      )}
+              <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} accept="image/*" />
+              {classificationResult ? (
+                <div>
+                  {classificationResult && <ResultBox result={classificationResult} />}
+                  <PDFDownloadLink document={<MyDocument />} fileName="report.pdf">
+                    {({ blob, url, loading, error }) => (loading ? 'Loading document...' : <Button className="action-button mt-2">Generate PDF</Button>)}
+                  </PDFDownloadLink>
+                </div>
+              ) : (
+                showGenerateReport && (
+                  <Button onClick={generateReport} className="action-button mt-2">Generate Report</Button>
+                )
+              )}
+            </Col>
+            <Col xs={12} md={6}>
+              <Card.Title>{`${selectedPatient.name}`}</Card.Title>
+              <Card.Text>{`Gender: ${selectedPatient.gender}`}</Card.Text>
+              <Card.Text>{`City: ${selectedPatient.city}`}</Card.Text>
+              <Card.Text>{`Phone: ${selectedPatient.phoneNo}`}</Card.Text>
+              <Form.Group className="mt-3">
+                <Form.Label>Notes</Form.Label>
+                <Form.Control as="textarea" rows={3} value={notes} onChange={handleNotesChange} />
+              </Form.Group>
+            </Col>
+          </Row>
+        </div>
+      </Container>
+    </Modal.Body>
+    <Modal.Footer>
+      <Button className="action-button" onClick={triggerFileInput}>Upload Xray</Button>
+      <Button className="action-button" onClick={handleCreateAppointment}>Create Appointment</Button>
+    </Modal.Footer>
+  </Modal>
+)}
+
+<Modal show={showAppointmentModal} onHide={handleCloseAppointmentModal} centered>
+  <Modal.Header closeButton>
+    <Modal.Title>Create Appointment</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <Form>
+      <Form.Group controlId="appointmentDate">
+        <Form.Label>Select Date</Form.Label>
+        <DatePicker
+          selected={appointmentDate}
+          onChange={(date) => setAppointmentDate(date)}
+          className="form-control"
+        />
+      </Form.Group>
+      <Form.Group controlId="appointmentTime">
+        <Form.Label>Select Time</Form.Label>
+        <Form.Control
+          type="time"
+          value={appointmentTime}
+          onChange={(e) => setAppointmentTime(e.target.value)}
+          className="form-control"
+        />
+      </Form.Group>
+    </Form>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={handleCloseAppointmentModal}>Cancel</Button>
+    <Button variant="primary" onClick={handleSaveAppointment}>Save Appointment</Button>
+  </Modal.Footer>
+</Modal>
+
+
+      
     </div>
   );
 };

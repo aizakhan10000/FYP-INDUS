@@ -5,6 +5,8 @@ import '../css-files/Dashboard.css'; // Ensure the path matches your CSS file fo
 import Sidebar from './Sidebar'; // Adjust the import path as necessary
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { saveAs } from 'file-saver';
+import Papa from 'papaparse';
 
 const Result = () => {
   const [loading, setLoading] = useState(true); // State to control loading animation
@@ -13,8 +15,8 @@ const Result = () => {
   // Access the uploaded results from the Redux state
   const uploadState = useSelector(state => state.upload);
   const results = uploadState.data || [];
-  console.log("UPLOADED DATA: ",uploadState);
-  console.log("results: ",results);
+  console.log("UPLOADED DATA: ", uploadState);
+  console.log("results: ", results);
 
   useEffect(() => {
     if (uploadState.loading) {
@@ -31,6 +33,18 @@ const Result = () => {
     navigate(-1); // Navigates back to the previous page
   };
 
+  const exportToCsv = () => {
+    const csvData = results.map(result => ({
+      'X-ray ID': result.id,
+      'Classification Result': result.result.prediction,
+      'Timestamp': new Date().toLocaleString()
+    }));
+
+    const csv = Papa.unparse(csvData);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'results.csv');
+  };
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -41,6 +55,9 @@ const Result = () => {
           <div className="dashboard-container">
             <Button variant="secondary" onClick={handleBack} className="mb-3">
               Back
+            </Button>
+            <Button variant="primary" onClick={exportToCsv} className="mb-3 ml-2">
+              Export to CSV
             </Button>
             <Container className="my-4">
               {loading ? ( // Display loading spinner while loading is true
@@ -60,12 +77,6 @@ const Result = () => {
                           <div style={{ width: '100%', height: '200px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <img src={result.xray.image} alt="X-ray" style={{ width: 'auto', height: '100%' }} />
                           </div>
-                          {/* <Card.Text className="mt-3">
-                            <strong>Left Analysis:</strong> {result.leftAnalysis.sign}, {result.leftAnalysis.accuracy}
-                          </Card.Text>
-                          <Card.Text>
-                            <strong>Right Analysis:</strong> {result.rightAnalysis.sign}, {result.rightAnalysis.accuracy}
-                          </Card.Text> */}
                           <Card className={`text-center bg-${resultColor(result.result)} text-white mt-3`}>
                             <Card.Body>{result.result.prediction === 'Pneumonia' ? 'Pneumonia' : 'Normal'}</Card.Body>
                           </Card>
